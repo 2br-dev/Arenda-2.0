@@ -9,8 +9,8 @@ export default class Navigation extends Component {
   render() {
     return (
       <header>
-        <input type="checkbox" class="hamburger" id="hamburger" />
-        <label for="hamburger" class="icon"></label>
+        <input type="checkbox" className="hamburger" id="hamburger" />
+        <label htmlFor="hamburger" className="icon"></label>
         <nav role='navigation'>
           <ul>
             <li>

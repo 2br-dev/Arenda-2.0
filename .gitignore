@@ -1,11 +1,3 @@
 node_modules
-apps/
-cp/
-cp_setup/
-upload_dir/
-img/
-protected/runtime/
-protected/config/
-protected/config/dev/
 .idea
 .vscode

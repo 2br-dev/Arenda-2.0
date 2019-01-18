@@ -27,16 +27,44 @@ class Contract
         $this->conn = $db;
     }
 
-    function read(){
-        $query = "SELECT * FROM `db_mdd_contracts` WHERE `visible` = 1 ORDER BY `id` ASC";
-    
-        // prepare query statement
-        $stmt = $this->conn->prepare($query);
-     
-        // execute query
-        $stmt->execute();
-     
-        return $stmt;
+    function read($visible){
+        $reestr = Q("SELECT 
+            `contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`datetime`,
+            `contract`.`status`, `contract`.`summa`, `contract`.`start_date`, `contract`.`end_date`, `contract`.`peni`,
+            `contract`.`start_arenda`, `contract`.`status`, 
+            
+            `room`.`id` as `room_id`, `room`.`number` as `room_number`, `room`.`floor`, `room`.`square`,
+            `room`.`number_scheme`, 
+            
+            `renter`.`id` as `renter_id`, `renter`.`short_name`, `renter`.`full_name`, `renter`.`ogrn`, `renter`.`kpp`,
+            `renter`.`inn`, `renter`.`bank_bik`, `renter`.`bank_ks`, `renter`.`bank_rs`, `renter`.`bank_name`,`renter`.`email`, 
+            `renter`.`phone`, `renter`.`balance`, `renter`.`form`, `renter`.`post_adress`, `renter`.`uridich_address`  
+            
+            FROM `#_mdd_contracts` as `contract`					
+            LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
+            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id` WHERE `status` = 1", array())->all();
+
+        return $reestr;    
+    }
+
+    function read_all(){
+        $reestr = Q("SELECT 
+            `contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`datetime`,
+            `contract`.`status`, `contract`.`summa`, `contract`.`start_date`, `contract`.`end_date`, `contract`.`peni`,
+            `contract`.`start_arenda`, `contract`.`status`, 
+            
+            `room`.`id` as `room_id`, `room`.`number` as `room_number`, `room`.`floor`, `room`.`square`,
+            `room`.`number_scheme`, 
+            
+            `renter`.`id` as `renter_id`, `renter`.`short_name`, `renter`.`full_name`, `renter`.`ogrn`, `renter`.`kpp`,
+            `renter`.`inn`, `renter`.`bank_bik`, `renter`.`bank_ks`, `renter`.`bank_rs`, `renter`.`bank_name`,`renter`.`email`, 
+            `renter`.`phone`, `renter`.`balance`, `renter`.`form`, `renter`.`post_adress`, `renter`.`uridich_address`  
+            
+            FROM `#_mdd_contracts` as `contract`					
+            LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
+            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id`", array())->all();
+        
+        return $reestr; 
     }
   
 }

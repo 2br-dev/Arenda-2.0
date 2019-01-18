@@ -1,4 +1,7 @@
 <?php
+
+include_once '../../define.php';
+
 class Room
 {
     // database connection and table name
@@ -18,15 +21,9 @@ class Room
     }
 
     function read(){
-        $query = "SELECT * FROM `db_mdd_rooms` WHERE `visible` = 1 ORDER BY `id` ASC";
+        $rooms = Q("SELECT * FROM `db_mdd_rooms` WHERE `visible` = 1 ORDER BY `id` ASC", array())->all();
     
-        // prepare query statement
-        $stmt = $this->conn->prepare($query);
-     
-        // execute query
-        $stmt->execute();
-     
-        return $stmt;
+        return $rooms;
     }
   
 }

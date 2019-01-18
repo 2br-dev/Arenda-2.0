@@ -1,4 +1,6 @@
 <?php
+include_once '../../define.php';
+
 class Renters
 {
     // database connection and table name
@@ -26,6 +28,7 @@ class Renters
     public $chief_name;
     public $chief_document;
     public $login;
+    public $visible;
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -33,15 +36,8 @@ class Renters
     }
 
     function read(){
-        $query = "SELECT * FROM `db_mdd_renters` WHERE `visible` = 1 ORDER BY `id` ASC";
-    
-        // prepare query statement
-        $stmt = $this->conn->prepare($query);
-     
-        // execute query
-        $stmt->execute();
-     
-        return $stmt;
+        $renters = Q("SELECT * FROM `#_mdd_renters` WHERE `visible` = ?i", array(1))->all();
+        return $renters;
     }
-  
+
 }
