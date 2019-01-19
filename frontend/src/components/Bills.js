@@ -1,26 +1,40 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import $ from 'jquery'
 import styled from 'styled-components'
+import Loader from './Loader'
 
 class Bills extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      fromFirstValue: 1,
+      today: this.setTodayDate(),
+      loading: true
+    }
+  }
+
   componentDidMount() {
     fetch(`http://arenda.local/api/contract/read_all.php`)
       .then(response => response.json())
       .then(res => this.props.getContracts(res)) 
+      .then(() => this.setState({ loading: false }))
   }
 
+  handleChangeFromFirstValue = e => this.setState({ fromFirstValue: e.target.value }); 
+
   setTodayDate = () => {
-    let d = new Date();
-    let date = d.getDate();
-    let month = d.getMonth() + 1;
-    let year = d.getFullYear();
-    if (date < 10) {
-      date = '0' + date;
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    if (day < 10) {
+      day = '0' + day;
     }
     if (month < 10) {
       month = '0' + month;
     }
-    return year + "-" + month + "-" + date;
+    return year + '-' + month + '-' + day;
   }
 
   createRadio(value) {
@@ -32,38 +46,50 @@ class Bills extends Component {
     )
   }
 
+  handleCheck = e => {
+    const makeEnabled = $(e.target).data('id');
+    if ( $(e.target).prop('checked') ) {
+      $(`input[name='period_sum'][data-id=${makeEnabled}]`).prop('disabled', false);
+    } else {
+      $(`input[name='period_sum'][data-id=${makeEnabled}]`).prop('disabled', true);
+    }
+  }
+
+
   createCheckbox(name, number, sum, id, renter, key) {
     return (
-      <div key={key}>
-        <label className="container-checkbox"><b>{name}</b> - {number}
-          <input type='checkbox' name='renter' data-sum={sum} data-id={id} value={renter} />
-          <span className="checkmark"></span>
+      <ContractRow key={key}>
+        <label className='container-checkbox'><b>{name}</b> - {number}
+          <input type='checkbox' name='renter' data-sum={sum} data-id={id} value={renter} onClick={this.handleCheck} />
+          <span className='checkmark'></span>
         </label>
-      </div>
+        <div>
+          <p>По договору: <b>{sum}₽</b></p>
+          <input type='text' data-id={id} disabled={true} name='period_sum' />
+        </div>
+      </ContractRow>
     )
   }
 
   render() {
+    const { fromFirstValue, loading } = this.state;
 
     return (
       <div className='container'>
-        <DateInput>
-          <p className='date-error'>Выберите дату:</p>
-          <input type='date' name='date' value={this.setTodayDate()} id='date' />
-        </DateInput>
-        <hr/>
+
+      {loading ? <Loader></Loader> : <>
+      <DateInput>
+        <p className='date-error'>Выберите дату:</p>
+        <input type='date' name='date' value={this.state.today} id='date' onChange={e => this.setState({today: e.target.value})}/>
+      </DateInput>
+      <hr/>
       <Form id='vystavlenie-schetov' method='POST' action=''>
-        <div>
-          <p className='error renter-error'><strong>Выберите один или более договор:</strong></p>      
-          {this.props.testStore.contracts.map((contract, index) => {
-            
-            return (
-              this.createCheckbox(contract.short_name, contract.contract_number, contract.summa, contract.contract_id, contract.renter_id, index) 
-            )
-            
-     
-          })}
-        </div>
+        <p className='error renter-error'><strong>Выберите один или более договор:</strong></p>      
+          
+        {this.props.testStore.contracts.map((contract, index) => {           
+          return this.createCheckbox(contract.short_name, contract.contract_number, contract.summa, contract.contract_id, contract.renter_id, index) 
+        })}
+
         <hr />
         <span className='error year-error'><strong>Выберите год:</strong></span>
         <YearsContainer>
@@ -103,12 +129,13 @@ class Bills extends Component {
             <input type='checkbox' name='from_first' />
             <span className='checkmark'></span>
           </label>
-          <input name='from_first_number' type='number' value='1'/>        
+          <input name='from_first_number' type='number' value={fromFirstValue} onChange={this.handleChangeFromFirstValue} />        
         </FromFirst>  
       </Form>
       <hr />
   
       <button className='btn' type='submit'>Выставить счёт</button>
+      </>}
     </div>
     )
   }
@@ -148,6 +175,28 @@ const FromFirst = styled.div`
     margin-left: 10px;
     width: 50px;
     text-align: center;
+  }
+`;
+
+const ContractRow = styled.div`
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    font-size: 14px;
+    margin: 0;
+    margin-right: 10px;
+  }
+
+  input {
+    width: 100px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
   }
 `;
 

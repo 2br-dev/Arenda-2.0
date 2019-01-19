@@ -2,18 +2,22 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import $ from 'jquery';
+import Loader from './Loader';
+import Hide from '../functions/hide'
 
 class Reestr extends Component {
   constructor(props){
     super(props);
     this.state = {
       visible: 1,
+      loading: true,
     }
     this.getRenters = this.getRenters.bind(this);
   }
 
   componentDidMount() {
     var self = this;
+    this.setState({loading: true})
     $.ajax({ 
       url: 'http://arenda.local/api/renters/read.php',
       type: 'POST',
@@ -41,11 +45,13 @@ class Reestr extends Component {
         console.log(err);
       }
     });
+    setTimeout(() => this.setState({ loading: false }), 1000);
   }
 
   getRenters(e) {
     e.preventDefault(); 
     var self = this;
+    this.setState({loading: true})
     this.state.visible === 1 ? this.setState({ visible: 0 }) : this.setState({ visible: 1 });
     $.ajax({ 
       url: 'http://arenda.local/api/renters/read.php',
@@ -59,7 +65,7 @@ class Reestr extends Component {
     });
 
     const formData = new FormData();
-    formData.append('visible', this.state.visible);
+    formData.append('visible', this.state.visible === 1 ?  0 : 1);
     
     $.ajax({ 
       url: 'http://arenda.local/api/contract/read.php',
@@ -74,6 +80,11 @@ class Reestr extends Component {
         console.log(err);
       }
     });
+    setTimeout(() => {
+      const hide = new Hide();
+      this.setState({ loading: false });
+      hide.hideRenters();
+    }, 1000);
   }
 
   toggleRenterDetails = e => $(e.target).siblings('.renter-details').slideToggle();
@@ -81,20 +92,21 @@ class Reestr extends Component {
   
   render() {
     const store = this.props.testStore;
-    const { visible } = this.state;
+    const { visible, loading } = this.state;
 
     return (
       <div className='container'>
+        {loading ? <Loader></Loader> : (<>
+        
         <div>
-          <button onClick={this.getRenters} className='btn' style={{ 'marginBottom':'30px'}}>
-           {!visible ? 'Показать всех арендаторов' : 'Показать с действующими договорами'}
+          <button onClick={this.getRenters} className='btn' style={{ 'marginBottom':'30px'}} id='showAllbtn'>
+           {!visible ? 'Показать с действующими договорами' : 'Показать всех арендаторов'}
           </button>
         </div>
 
         {store.renters.map((renter, i) => {                  
-          
           return (  
-          <RenterContainer key={`renter-${i}`} onClick={this.toggleRenterDetails}>   
+          <RenterContainer key={`renter-${i}`} onClick={this.toggleRenterDetails} className='renter'>   
             <h2>{renter.short_name} — Баланс: 
               {renter.balance > 0 ? <span style={{'color':'green'}}> {renter.balance} ₽ </span> : <span style={{'color':'red'}}> {renter.balance} ₽</span>}
             </h2>
@@ -111,10 +123,11 @@ class Reestr extends Component {
               <p><b>Расчетный счет:</b> {renter.bank_rs}</p>
             </RenterDetails>
 
-            {store.contracts.map((contract, i) => {
+            {store.contracts.map((contract, j) => {
               if (contract.renter_id === renter.id) {
+
                 return (
-                  <RenterContract data-status={contract.status} key={`contract-${i}`}>
+                  <RenterContract data-status={contract.status} key={`contract-${j}`} className='renter-contract'>
                     <RenterContractDetails onClick={this.toggleContractDetails}>
                       
                       {contract.end_date !== '' 
@@ -140,12 +153,13 @@ class Reestr extends Component {
                       </div>
                   </RenterContract>
                 )
-              }               
+              }   
             })}
           </RenterContainer>
           ) 
         })} 
-      </div>
+        </>)}
+      </div> 
     )
   }
 }

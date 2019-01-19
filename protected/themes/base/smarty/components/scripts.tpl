@@ -8,8 +8,8 @@
     ]
 } 
   <script src="/js/jquery.min.js"></script>
-  <script src='/frontend/build/static/js/1.aa6ee6f2.chunk.js'></script>
-  <script src='/frontend/build/static/js/main.97127e14.chunk.js'></script>
+  <script src='/frontend/build/static/js/1.0e66d7e2.chunk.js'></script>
+  <script src='/frontend/build/static/js/main.ef783f19.chunk.js'></script>
   <script src='/frontend/build/static/js/runtime~main.229c360f.js'></script>
 
 </body>
