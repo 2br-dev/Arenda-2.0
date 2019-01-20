@@ -40,4 +40,9 @@ class Renters
         return $renters;
     }
 
+    function read_all(){
+        $renters = Q("SELECT * FROM `#_mdd_renters` WHERE `visible` = ?i", array(1))->all();
+        return $renters;
+    }
+
 }

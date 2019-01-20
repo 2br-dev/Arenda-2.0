@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import $ from 'jquery';
-import Loader from './Loader';
-import Hide from '../functions/hide'
+import $ from 'jquery'
+import Loader from './Loader'
+import Functions from '../functions/Functions'
 
 class Reestr extends Component {
   constructor(props){
@@ -15,9 +15,12 @@ class Reestr extends Component {
     this.getRenters = this.getRenters.bind(this);
   }
 
+
   componentDidMount() {
     var self = this;
     this.setState({loading: true})
+
+    // получаем арендаторов
     $.ajax({ 
       url: 'http://arenda.local/api/renters/read.php',
       type: 'POST',
@@ -31,7 +34,7 @@ class Reestr extends Component {
 
     const formData = new FormData();
     formData.append('visible', this.state.visible);
-
+    // получаем договора
     $.ajax({ 
       url: 'http://arenda.local/api/contract/read.php',
       data        : formData,
@@ -45,10 +48,16 @@ class Reestr extends Component {
         console.log(err);
       }
     });
-    setTimeout(() => this.setState({ loading: false }), 1000);
+    // симулируем загрузку, ставим прелоадер
+    setTimeout(() => {
+      this.setState({ loading: false });
+      const F = new Functions();
+      F.hideRenters();
+    }, 500);
   }
 
   getRenters(e) {
+    // получаем арендаторов (срабатывает при клике на кнопку "показать всех")
     e.preventDefault(); 
     var self = this;
     this.setState({loading: true})
@@ -66,7 +75,7 @@ class Reestr extends Component {
 
     const formData = new FormData();
     formData.append('visible', this.state.visible === 1 ?  0 : 1);
-    
+    // получаем договора
     $.ajax({ 
       url: 'http://arenda.local/api/contract/read.php',
       data        : formData,
@@ -80,13 +89,16 @@ class Reestr extends Component {
         console.log(err);
       }
     });
+    // симулируем задержку получения данных
+    // скрываем арендаторов без договора
     setTimeout(() => {
-      const hide = new Hide();
       this.setState({ loading: false });
-      hide.hideRenters();
-    }, 1000);
+      const F = new Functions();
+      F.hideRenters();
+    }, 500);
   }
 
+  // Toggle при клике на арендатора и договора
   toggleRenterDetails = e => $(e.target).siblings('.renter-details').slideToggle();
   toggleContractDetails = e => $(e.target).siblings('.details').slideToggle();
   
@@ -96,6 +108,7 @@ class Reestr extends Component {
 
     return (
       <div className='container'>
+        {/* если loading===true показываем лоадер, если нет то компонент*/}
         {loading ? <Loader></Loader> : (<>
         
         <div>
@@ -104,6 +117,7 @@ class Reestr extends Component {
           </button>
         </div>
 
+        {/* рендерим арендаторов (аналог smarty foreach) */}
         {store.renters.map((renter, i) => {                  
           return (  
           <RenterContainer key={`renter-${i}`} onClick={this.toggleRenterDetails} className='renter'>   
@@ -123,6 +137,7 @@ class Reestr extends Component {
               <p><b>Расчетный счет:</b> {renter.bank_rs}</p>
             </RenterDetails>
 
+            {/* рендерим договора */}
             {store.contracts.map((contract, j) => {
               if (contract.renter_id === renter.id) {
 

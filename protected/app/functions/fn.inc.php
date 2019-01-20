@@ -294,3 +294,61 @@ function rDir($dir)
 
     return $arr;
 }
+
+function getMonthString($month) {
+    $month_number = '00';
+    $days = 0;
+
+    switch ($month) {
+        case 'Январь':
+          $month_number = '01';
+          $days = 31;
+          break;
+        case 'Февраль':
+          $month_number = '02';
+          $days = 28;
+          break;
+        case 'Март':
+          $month_number = '03';
+          $days = 31;
+          break;
+        case 'Апрель':
+          $month_number = '04';
+          $days = 30;
+          break;
+        case 'Май':
+          $month_number = '05';
+          $days = 31;
+          break;
+        case 'Июнь':
+          $month_number = '06';
+          $days = 30;
+          break;
+        case 'Июль':
+          $month_number = '07';
+          $days = 31;
+          break;
+        case 'Август':
+          $month_number = '08';
+          $days = 31;
+          break;
+        case 'Сентябрь':
+          $month_number = '09';
+          $days = 30;
+          break;
+        case 'Октябрь':
+          $month_number = '10';
+          $days = 31;
+          break;
+        case 'Ноябрь':
+          $month_number = '11';
+          $days = 30;
+          break;
+        case 'Декабрь':
+          $month_number = '12';
+          $days = 31;
+          break;											
+        }	
+    
+    return array('month_number' => $month_number, 'days' => $days);
+}

@@ -9,18 +9,19 @@ export default class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: ''
+      url: window.location.pathname.slice(1), // берём реальный URL
     }
     this.handleChangeUrl = this.handleChangeUrl.bind(this);
   }
-  
+
+  // передаём в навигацию, чтобы переключать стейт.
   handleChangeUrl = url => this.setState({ url });
 
   // переключаем компонент и отправляем в рендер
   switchComponent = () => {
     switch(this.state.url) {
       case '':
-        return <Reestr />  
+        return <Print />  
       case 'reestr':
         return <Reestr /> 
       case 'bills':
