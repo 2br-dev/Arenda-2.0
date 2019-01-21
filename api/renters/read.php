@@ -9,10 +9,8 @@ $database = new Database();
 $db = $database->getConnection();
 
 $renters = new Renters($db);
- 
-$visible = __post('visible');
 
-$stmt = $renters->read($visible);
+$stmt = $renters->read();
 
 echo json_encode($stmt);
 

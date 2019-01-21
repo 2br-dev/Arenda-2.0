@@ -72,5 +72,13 @@ class Invoice
   
         return $invoices;
     }  
+
+    function read_by_contract($id) {   
+        $invoices = Q("SELECT * FROM `#_mdd_invoice` 
+            WHERE `contract_id` = ?s 
+            ORDER BY `invoice_number`", array($id))->all();
+  
+        return $invoices;
+    }  
  
 }

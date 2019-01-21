@@ -52,7 +52,7 @@ class Reestr extends Component {
     setTimeout(() => {
       this.setState({ loading: false });
       const F = new Functions();
-      F.hideRenters();
+      F.hideRenters(); // прячем арендаторов без договоров
     }, 500);
   }
 

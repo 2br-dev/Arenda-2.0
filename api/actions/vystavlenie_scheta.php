@@ -87,7 +87,7 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
     $db->query($update_contract_balance);
     
     // еще раз првоеряем баланс, если положительный то..
-    if ($starting_balance > 0) {
+    if ($starting_balance >= 0) {
       // записываем в остаток разницу счета и баланса
       $rest = $rest - $starting_balance;
       // если разница меньше нуля, значит баланс покрывает счет полность

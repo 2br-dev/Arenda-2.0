@@ -27,7 +27,7 @@ class Contract
         $this->conn = $db;
     }
 
-    function read($visible){
+    function read($status){
         $reestr = Q("SELECT 
             `contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`datetime`,
             `contract`.`status`, `contract`.`summa`, `contract`.`start_date`, `contract`.`end_date`, `contract`.`peni`,
@@ -42,7 +42,7 @@ class Contract
             
             FROM `#_mdd_contracts` as `contract`					
             LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
-            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id` WHERE `status` = 1", array())->all();
+            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id` WHERE `status` = ?i", array($status))->all();
 
         return $reestr;    
     }
@@ -62,9 +62,15 @@ class Contract
             
             FROM `#_mdd_contracts` as `contract`					
             LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
-            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id`", array())->all();
+            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id`")->all();
         
         return $reestr; 
+    }
+
+    function read_one($id){
+        $contracts = Q("SELECT * FROM `#_mdd_contracts` WHERE `renter` = ?s",array($id))->all();
+        
+        return $contracts; 
     }
   
 }

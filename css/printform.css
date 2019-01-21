@@ -1,0 +1,199 @@
+body {
+	background: white !important;
+	font-size: 14px !important;
+  font-family: Arial, Helvetica, sans-serif;
+}
+table {
+	font-size: 14px !important;
+}
+.navigation {
+	display: none !important;
+}
+.wrapper-schet, .wrapper-akt {
+  width: 760px;
+  height: 1010px;
+  padding: 10px 20px;
+}
+
+.wrapper-schet table, .wrapper-akt table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.wrapper-schet table tr td, .wrapper-akt table tr td {
+	padding: 5px; 
+}
+
+.arendodatel-name {
+	margin-bottom: 5px;
+}
+
+.arendodatel-name p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.arendodatel-address {
+	margin-bottom: 15px;
+}
+
+.arendodatel-address p {
+	margin: 0;
+	font-style: italic;
+	font-size: 12px;
+}
+
+.arendodatel-bank {
+	margin-bottom: 25px;
+}
+
+input {
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	width: 99%;	
+}
+
+.arendodatel-bank p {
+	margin: 0;
+	text-align: center;
+}
+
+.schet-number {
+  margin-bottom: 15px;
+}
+
+.schet-number p {
+	margin: 0;
+	font-weight: bold;
+	font-size: 25px;
+	font-style: italic;
+	text-align: center;
+}
+
+.arendator-name {
+  margin-bottom: 15px;
+}
+
+.arendator-name p {
+	margin: 0;
+	font-size: 12px;
+}
+
+.schet {
+	margin-bottom: 55px;
+}
+
+.schet p {
+	margin: 0;
+}
+
+.podval {
+	margin-top: 15px;
+}
+
+.sign {
+	position: relative;
+}
+
+.akt-print{
+	position: absolute;
+	top: 0;
+	left: 160px;
+	z-index: 10;
+}
+
+.akt-sign-img {
+	position: absolute;
+	top: -45px;
+	left: 100px;
+	z-index: 20;
+}
+
+.sf-sign-img {
+	position: absolute;
+	top: -27px;
+	left: 250px;
+	z-index: 10;
+}
+
+.sign p {
+	margin: 0;
+	z-index: 100;
+	position: relative;
+}
+/*end*/	
+
+/*
+ Печатная форма - Счет-фактура
+*/
+.wrapper-sf {
+	padding: 10px 20px;
+	width: 1070px;
+	height: 720px;
+	position: relative;
+}
+
+.wrapper-sf table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.wrapper-sf table tr td {
+	padding: 5px;
+	font-size: 11px;
+	border: 1px solid #000000; 
+}
+
+.forma {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	text-align: right;
+}
+
+.forma p {
+	margin: 0;
+	font-size: 10px;
+}
+
+.sf-number {
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.sf-number p {
+	margin: 0;
+	font-weight: bold;
+	font-style: italic;
+	font-size: 20px;
+}
+
+.sf-data {
+	margin-bottom: 10px;
+}
+
+.sf-data p {
+	margin: 0;
+	font-size: 12px;
+}
+
+.sf-table {
+	margin-bottom: 55px;
+}
+input {
+  font-family: unset !important;
+  width: unset !important; 
+  padding: unset !important; 
+  border-radius: unset !important; 
+  border: unset !important; 
+  max-width: 80px;
+}
+
+nav {
+  display: none !important;
+}
+
+* { 
+  box-sizing: unset !important;
+}

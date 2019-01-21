@@ -3,7 +3,11 @@ export default function arenda(state = [], action) {
     case 'FETCH_CONTRACTS':
       return [...action.payload]
     case 'FETCH_ALL_CONTRACTS':
-      return [...action.payload]  
+      return [...action.payload] 
+    case 'FETCH_SINGLE_CONTRACT':
+      return [...action.payload]   
+    case 'CLEAR_CONTRACTS':
+      return [];       
     default:
       return state
   }
