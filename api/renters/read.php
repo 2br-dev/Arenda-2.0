@@ -10,7 +10,7 @@ $db = $database->getConnection();
 
 $renters = new Renters($db);
 
-$stmt = $renters->read();
+$stmt = $renters->read_all();
 
 echo json_encode($stmt);
 

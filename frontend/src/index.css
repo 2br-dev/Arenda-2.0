@@ -244,6 +244,14 @@ hr {
 .close:after {
   transform: rotate(-45deg);
 }
+.toggle {
+  padding: 5px;
+  cursor: pointer;
+}
+.toggle:hover {
+  background: lightblue;
+  transition: .37s ease;
+}
 @media all and (max-width:30em){
   .btn {
     display: block;

@@ -22,7 +22,7 @@ class Reestr extends Component {
 
     // получаем арендаторов
     $.ajax({ 
-      url: 'http://arenda.local/api/renters/read.php',
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`,
       type: 'POST',
       success: function(res) {
         self.props.getRenters(res)
@@ -36,7 +36,7 @@ class Reestr extends Component {
     formData.append('visible', this.state.visible);
     // получаем договора
     $.ajax({ 
-      url: 'http://arenda.local/api/contract/read.php',
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read.php`,
       data        : formData,
       processData : false,
       contentType : false,
@@ -63,7 +63,7 @@ class Reestr extends Component {
     this.setState({loading: true})
     this.state.visible === 1 ? this.setState({ visible: 0 }) : this.setState({ visible: 1 });
     $.ajax({ 
-      url: 'http://arenda.local/api/renters/read.php',
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`,
       type: 'POST',
       success: function(res) {
         self.props.getRenters(res)
@@ -77,7 +77,7 @@ class Reestr extends Component {
     formData.append('visible', this.state.visible === 1 ?  0 : 1);
     // получаем договора
     $.ajax({ 
-      url: 'http://arenda.local/api/contract/read.php',
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read.php`,
       data        : formData,
       processData : false,
       contentType : false,

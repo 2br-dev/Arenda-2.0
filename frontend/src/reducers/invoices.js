@@ -5,7 +5,9 @@ export default function arenda(state = [], action) {
     case 'DELETE_INVOICE':
       return [...action.payload]  
     case 'CLEAR_INVOICES':
-      return []        
+      return []  
+    case 'FETCH_INVOICES_BY_RENTER':
+      return [...action.payload]           
     case 'FETCH_INVOICES_BY_ID':
       return [...action.payload]    
     default:

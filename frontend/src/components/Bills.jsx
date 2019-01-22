@@ -21,7 +21,7 @@ class Bills extends Component {
 
   // получаем договора 
   componentDidMount() {
-    fetch(`http://arenda.local/api/contract/read_all.php`)
+    fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read_all.php`)
       .then(response => response.json())
       .then(res => this.props.getContracts(res)) 
       .then(() => this.setState({ loading: false }))
@@ -75,7 +75,7 @@ class Bills extends Component {
       $("input[name='period_sum']").prop('disabled', true);         
       $.ajax({
         type: "POST",
-        url: "http://arenda.local/api/actions/vystavlenie_scheta.php",
+        url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/actions/vystavlenie_scheta.php`,
         data: data,
         success: function(res){
           if (res.result === 1) {

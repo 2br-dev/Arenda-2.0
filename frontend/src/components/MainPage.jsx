@@ -39,14 +39,13 @@ export default class MainPage extends Component {
     const { url } = this.state
 
     return (
-      <>
-        <Navigation 
-          url={url} 
-          handleChangeUrl={this.handleChangeUrl}
-        />
-
-        {this.switchComponent()}   
-      </>
+      <React.Fragment>
+          <Navigation 
+            url={url} 
+            handleChangeUrl={this.handleChangeUrl}
+          />
+          {this.switchComponent()}  
+      </React.Fragment>
     )
   }
 }

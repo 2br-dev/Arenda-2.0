@@ -4,6 +4,8 @@ export default function arenda(state = [], action) {
       return [...action.payload]
     case 'FETCH_ALL_RENTERS':
       return [...action.payload]
+    case 'FETCH_SINGLE_RENTER':
+      return {...action.payload}
     default:
       return state
   }

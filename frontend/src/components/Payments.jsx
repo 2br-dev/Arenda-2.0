@@ -23,7 +23,7 @@ class Payments extends Component {
   }
 
   componentDidMount = () => {
-    fetch(`http://arenda.local/api/renters/read.php`)
+    fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`)
       .then(response => response.json())
       .then(res => this.props.getRenters(res)) 
       .then(() => this.setState({ loading: false }))
@@ -62,7 +62,7 @@ class Payments extends Component {
       $.ajax({
         type: "POST",
         data: data,
-        url: "http://arenda.local/api/actions/payment.php",
+        url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/actions/payment.php`,
         success: function(res){
           console.log(res);
           self.openModal('Успешно!');
@@ -92,7 +92,7 @@ class Payments extends Component {
     const target = e.target;
     $.ajax({
       type: "POST",
-      url: "http://arenda.local/api/contract/read_one.php",
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read_one.php`,
       data: { id: target.value },
       success: function(res){
         self.setState({ selectedRenter: target.value });
@@ -111,7 +111,7 @@ class Payments extends Component {
     const target = e.target;
     $.ajax({
       type: "POST",
-      url: "http://arenda.local/api/invoice/read_by_contract.php",
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/invoice/read_by_contract.php`,
       data: { id: target.value },
       success: function(res){
         self.setState({ selectedContract: target.value });

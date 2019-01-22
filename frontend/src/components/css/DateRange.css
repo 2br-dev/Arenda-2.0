@@ -1,0 +1,21 @@
+.react-daterange-picker__wrapper input {
+  padding: 0 !important;
+  border: 0 !important;
+  color: white !important;
+}
+.react-daterange-picker__inputGroup {
+  display: flex !important;
+  justify-content: space-evenly !important;
+}
+.react-daterange-picker__wrapper {
+  background: black !important;
+  border: 0 !important;
+  color: white !important;
+  border-radius: 10px !important;
+  padding: 5px 10px !important;
+}
+.react-daterange-picker__button {
+  background: rgba(255,255,255,0.9) !important;
+  border-radius: 50% !important;
+  display: none !important;
+}

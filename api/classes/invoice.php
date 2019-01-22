@@ -80,5 +80,13 @@ class Invoice
   
         return $invoices;
     }  
+
+    function read_by_renter_fullname($fullname) {   
+        $invoices = Q("SELECT * FROM `#_mdd_invoice` 
+            WHERE `renter` = ?s 
+            ORDER BY `invoice_number`", array($fullname))->all();
+  
+        return $invoices;
+    }  
  
 }

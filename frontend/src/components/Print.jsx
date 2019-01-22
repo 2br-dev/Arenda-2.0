@@ -25,7 +25,7 @@ class Print extends Component {
 
   // получаем арендаторов
   componentDidMount() {
-    fetch(`http://arenda.local/api/renters/read.php`)
+    fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`)
       .then(response => response.json())
       .then(res => this.props.getRenters(res)) 
       .then(() => this.setState({ loading: false }))
@@ -51,7 +51,7 @@ class Print extends Component {
     if (data.year) {        
       $.ajax({
         type: "POST",
-        url: "http://arenda.local/api/invoice/read.php",
+        url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/invoice/read.php`,
         data: data,
         success: function(res){
           if (res.result === 1) {
@@ -80,7 +80,7 @@ class Print extends Component {
     const id = e.target.dataset.invoice;
     $.ajax({
       type: "POST",
-      url: "http://arenda.local/api/invoice/delete.php",
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/invoice/delete.php`,
       data: { invoice_id: e.target.dataset.invoice, contract: e.target.dataset.contract },
       success: function(res){
         console.log(res);

@@ -35,8 +35,8 @@ class Renters
         $this->conn = $db;
     }
 
-    function read(){
-        $renters = Q("SELECT * FROM `#_mdd_renters` WHERE `visible` = ?i", array(1))->all();
+    function read_one($id){
+        $renters = Q("SELECT * FROM `#_mdd_renters` WHERE `id` = ?s", array($id))->all();
         return $renters;
     }
 
