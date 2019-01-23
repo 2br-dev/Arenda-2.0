@@ -54,7 +54,7 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
    
   // берем общий баланс арендодателя и баланс контракта	
   $balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('balance');
-  $contract_balance = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('balance');
+  $contract_balance = intval(Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('balance'));
   
   // прибавляем им сумму
   $balance += $summa;
