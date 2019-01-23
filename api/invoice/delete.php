@@ -18,10 +18,10 @@ $contract = __post('contract');
 if($invoice != '' && $contract != '') {
 
   // находим арендодателя, которому был выставлен счёт
-  $renter = Q("SELECT `renter` 	FROM `#_mdd_invoice` WHERE `id` = ?s",array($invoice))->row('renter');
+  $renter = Q("SELECT `renter` 	FROM `#_mdd_invoice` WHERE `invoice_number` = ?s",array($invoice))->row('renter');
 
   // находим сумму в счёте
-  $sum = Q("SELECT `summa` 	FROM `#_mdd_invoice` WHERE `id` = ?s",array($invoice))->row('summa');
+  $sum = Q("SELECT `summa` 	FROM `#_mdd_invoice` WHERE `invoice_number` = ?s",array($invoice))->row('summa');
 
   // находим общий баланс и баланс по договору арендодателя
   $contract_balance = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?s",array($contract))->row('balance');
@@ -35,13 +35,18 @@ if($invoice != '' && $contract != '') {
   $sql = "DELETE FROM `db_mdd_invoice` WHERE `id`= '$invoice'";
   $db->query($sql);
 
-  // удаляем из балансов
+  // удаляем запись из таблицы балансов
   $id = Q("SELECT `id` FROM `#_mdd_balance` WHERE `ground_id` = '$invoice'", array())->row('id');
-  $delete_balance = "DELETE FROM `db_mdd_balance` WHERE `ground_id` = '$invoice'";
+  $delete_balance = "DELETE FROM `db_mdd_balance` WHERE `id` = '$id'";
   $db->query($delete_balance);
 
+  // удаляем сам счёт
+  $delete_invoice = "DELETE FROM `db_mdd_invoice` WHERE `invoice_number` = '$invoice'";
+  $db->query($delete_invoice);
+
   // находим все последующие записи в балансах (если есть)
-  $balance_array = Q("SELECT `balance`,`id` FROM `#_mdd_balance` WHERE `contract_id` = '$contract' AND `id` > '$id'",array())->all();	
+  $balance_array = Q("SELECT `balance`,`id` FROM `#_mdd_balance` 
+    WHERE `contract_id` = '$contract' AND `id` > '$id'",array())->all();
 
   // для каждого нам нужно обновить баланс
   for ($i = 0; $i < count($balance_array); $i++) {

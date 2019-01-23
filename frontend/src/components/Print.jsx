@@ -84,7 +84,7 @@ class Print extends Component {
       data: { invoice_id: e.target.dataset.invoice, contract: e.target.dataset.contract },
       success: function(res){
         console.log(res);
-        self.props.filterInvoices(self.props.testStore.invoices.filter(inv => inv.id !== id ));
+        self.props.filterInvoices(self.props.testStore.invoices.filter(inv => inv.invoice_number !== id ));
       },
       error: function(err) {
         console.log(err);
@@ -195,12 +195,10 @@ class Print extends Component {
               <p style={{ 'margin':'0' }}><b>{inv.renter}</b></p>
               <p style={{ 'margin':'0' }}> № счёта: <b>{inv.invoice_number}</b>, на сумму: <b>{inv.summa}₽</b>, от: <b>{inv.invoice_date}</b></p>
             </div>
-            <span onClick={this.handleDelete} className='btn' data-invoice={inv.id} data-contract={inv.contract_id}>удалить<img src={DeleteIcon} alt=''/></span>
+            <span onClick={this.handleDelete} className='btn' data-invoice={inv.invoice_number} data-contract={inv.contract_id}>удалить<img src={DeleteIcon} alt=''/></span>
           </RenterInfo>
           <hr />
           <div>
-            {inv.summa > inv.discount 
-          ? 
             <><LinkRow>
               <a href={`/schet-pechatnaya-forma?num=${inv.invoice_number}&ind=sch&pr=0&disc=0`} target='_blank' rel='noopener noreferrer'>Счет</a>
               <a href={`/schet-pechatnaya-forma?num=${inv.invoice_number}&ind=akt&pr=0&disc=0`} target='_blank' rel='noopener noreferrer'>Акт</a>
@@ -211,7 +209,6 @@ class Print extends Component {
               <a href={`/schet-pechatnaya-forma?num=${inv.invoice_number}&ind=akt&pr=1&disc=0`} target='_blank' rel='noopener noreferrer'>Акт+печать</a>
               <a href={`/schet-pechatnaya-forma?num=${inv.invoice_number}&ind=sf&pr=1&disc=0`} target='_blank' rel='noopener noreferrer'>Счет-фактура+печать</a>
             </LinkRow></>
-          :
             <><LinkRow>
               <a href={`/schet-pechatnaya-forma?num=${inv.invoice_number}&ind=sch&pr=0&disc=1`} target='_blank' rel='noopener noreferrer'>Счет (со скидкой)</a>
               <a href={`/schet-pechatnaya-forma?num=${inv.invoice_number}&ind=akt&pr=0&disc=1`} target='_blank' rel='noopener noreferrer'>Акт (со скидкой)</a>
@@ -222,7 +219,6 @@ class Print extends Component {
               <a href={`/schet-pechatnaya-forma?num=${inv.invoice_number}&ind=akt&pr=1&disc=1`} target='_blank' rel='noopener noreferrer' >Акт (со скидкой)+печать</a>
               <a href={`/schet-pechatnaya-forma?num=${inv.invoice_number}&ind=sf&pr=1&disc=1`} target='_blank' rel='noopener noreferrer'>Счет-фактура (со скидкой)+печать</a>
             </LinkRow></>
-          }
           </div>  
         </div>
         )

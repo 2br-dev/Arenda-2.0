@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Loader from './Loader'
 import Modal from './Modal'
-import $ from 'jquery';
+import $ from 'jquery'
+import Functions from '../functions/Functions'
 
 class Payments extends Component {
   constructor(props){
@@ -43,22 +44,22 @@ class Payments extends Component {
       invoices.push($(this).val());
     });
     invoices.sort(this.sortNumber); // сортируем
-
-    const data = {
-      summa:              parseFloat(summa.replace(/,/g,'.')).toFixed(2), // требуемый формат
-      date:               date,
-      number:             number,
-      renter_id:          selectedRenter,
-      renter_name:        store.renters.find(renter => renter.id === selectedRenter).full_name, // находим имя арендатора
-      renter_document:    store.contracts.find(contract => contract.id === selectedContract).number, // находим номер договора
-      contract_id:        selectedContract,
-      invoices:           invoices,
-    };
-    
-  console.log(data);
  
-  // если все поля есть - то делаем запрос
-  if (data.summa && data.date && data.number && data.renter_name && data.renter_document && data.contract_id && data.invoices.length !== 0) {
+    // если все поля есть - то делаем запрос
+    if (summa && date && number && selectedRenter && selectedContract && invoices.length !== 0) {
+      const data = {
+        summa:              parseFloat(summa.replace(/,/g,'.')).toFixed(2), // требуемый формат
+        date:               date,
+        number:             number,
+        renter_id:          selectedRenter,
+        renter_name:        store.renters.find(renter => renter.id === selectedRenter).full_name, // находим имя арендатора
+        renter_document:    store.contracts.find(contract => contract.id === selectedContract).number, // находим номер договора
+        contract_id:        selectedContract,
+        invoices:           invoices,
+      };
+      
+      console.log(data);
+
       $.ajax({
         type: "POST",
         data: data,
@@ -147,6 +148,7 @@ class Payments extends Component {
   render() {
     const { date, loading, selectedRenter, selectedContract } = this.state;
     const store = this.props.testStore;
+    const F = new Functions();
 
     return (
       <section className='container' style={{'width':'600px'}}>
@@ -178,20 +180,20 @@ class Payments extends Component {
         </Select>
         :null}
 
-        {store.invoices.map((invoice, i) => {  
-          return ( 
-          <React.Fragment key={i}>
-          <hr /> 
-          <Label    
-            className='container-checkbox' 
-            style={{'marginBottom':'0'}}
-          >
-          Номер счёта {invoice.invoice_number} от <b>{invoice.invoice_date}</b>, остаток по счёту: <b> {invoice.rest}</b>
-            <input name='invoice_number' type='checkbox' value={invoice.invoice_number} />
-            <span className='checkmark'></span>
-          </Label>
-          </React.Fragment>
-          )
+        {selectedRenter !== '' && selectedContract !== '' && store.invoices.map((invoice, i) => {  
+          if (invoice.rest > 0) {
+            return (<React.Fragment key={i}>
+              <hr /> 
+              <Label    
+                className='container-checkbox' 
+                style={{'marginBottom':'0'}}
+              >
+              Номер счёта {invoice.invoice_number} от <b>{F.getStringOfMonth(invoice.period_month)}, {invoice.period_year}</b>, остаток по счёту: <b> {invoice.rest}</b>
+                <input name='invoice_number' type='checkbox' value={invoice.invoice_number} />
+                <span className='checkmark'></span>
+              </Label>
+            </React.Fragment>)
+          }
         })}       
     
         {store.invoices.length !== 0 && selectedRenter !== '' && selectedContract !== '' 
@@ -257,8 +259,11 @@ const FormRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  label {
+    text-align: left;
+  }
   input {
-    width: 80%;
+    width: 70%;
     background: #fff;
   }
   margin-bottom: 10px;

@@ -9,7 +9,8 @@ import styled from 'styled-components'
 export default class Navigation extends Component {
 
   logout = () => {
-    fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin + '/api/user/logout.php'}`)
+    fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/user/logout.php`)
+      .then(() => window.location.href = '/login')
       .catch(err => console.log(err))
   }
 

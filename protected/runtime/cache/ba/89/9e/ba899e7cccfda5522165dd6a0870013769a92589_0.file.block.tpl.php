@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-22 20:59:16
+/* Smarty version 3.1.32, created on 2019-01-23 16:10:53
   from 'C:\OpenServer\domains\arenda.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c4759f42c4665_72702427',
+  'unifunc' => 'content_5c4867dd9cdad6_86287142',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ba899e7cccfda5522165dd6a0870013769a92589' => 
     array (
       0 => 'C:\\OpenServer\\domains\\arenda.local\\protected\\modules\\printforms\\tpl\\block.tpl',
-      1 => 1548070237,
+      1 => 1548249015,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c4759f42c4665_72702427 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c4867dd9cdad6_86287142 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\arenda.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><link type="text/css" rel="stylesheet" href="/css/printform.css" />
 
@@ -259,7 +259,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 						<p><input style="width: 97%;" type="text" value="( <?php echo $_smarty_tpl->tpl_vars['allpeni']->value['string'];?>
  )"></p>
 						<?php } else { ?>
-						<p><input style="width: 97%;" type="text" class='numeric-sum' value="обновите страницу"></p>
+						<p><input style="width: 100% !important; max-width: unset;" type="text" class='numeric-sum' value="обновите страницу"></p>
 					<?php }?>					
 					
 				</div>
@@ -372,8 +372,8 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 				</table>
 				<div style="clear: both;"></div>
 				<div class="podval">
-					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму <strong><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['allprice_string'];?>
-"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму:  <strong> <input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['allprice_string'];?>
+"> </strong> в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					<p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p>
 				</div>
 				<?php } else { ?>
@@ -471,13 +471,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 				<div style="clear: both;"></div>
 				<div class="podval">
 				<?php if ($_smarty_tpl->tpl_vars['peni']->value == 1) {?>
-					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['allpeni']->value['string'];?>
-"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму: <strong> <input style="width: 100% !important; max-width: unset;" type="text" class='numeric-sum' value="<?php echo $_smarty_tpl->tpl_vars['allpeni']->value['string'];?>
+"></strong> в т.ч.: НДС - Ноль рублей 00 копеек</p>
 				<?php } else { ?>
 					<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
-						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" class='numeric-sum' value=""></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму: <strong> <input style="width: 100% !important; max-width: unset;" type="text" class='numeric-sum' value=""></strong> в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					<?php } else { ?>
-						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" class='numeric-sum' value=""></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму: <strong> <input style="width: 100% !important; max-width: unset;" type="text" class='numeric-sum' value=""></strong> в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					<?php }?>
 				<?php }?>	
 					<p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p>
@@ -972,6 +972,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 	</div>
 	<?php }?>	
 </div>
+
 
 <style>
 	tr, td {

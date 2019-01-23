@@ -15,13 +15,13 @@ class Reestr extends Component {
     this.getRenters = this.getRenters.bind(this);
   }
 
-
-  componentDidMount() {
+  // асинхронные запросы на получение арендаторов и договоров
+  async componentDidMount() {
     var self = this;
     this.setState({loading: true})
 
     // получаем арендаторов
-    $.ajax({ 
+    await $.ajax({ 
       url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`,
       type: 'POST',
       success: function(res) {
@@ -35,7 +35,7 @@ class Reestr extends Component {
     const formData = new FormData();
     formData.append('visible', this.state.visible);
     // получаем договора
-    $.ajax({ 
+    await $.ajax({ 
       url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read.php`,
       data        : formData,
       processData : false,
@@ -48,21 +48,22 @@ class Reestr extends Component {
         console.log(err);
       }
     });
-    // симулируем загрузку, ставим прелоадер
-    setTimeout(() => {
-      this.setState({ loading: false });
+
+    // по окончанию убираем спиннер
+    await (function() {
+      self.setState({ loading: false });
       const F = new Functions();
       F.hideRenters(); // прячем арендаторов без договоров
-    }, 500);
+    })();
   }
 
-  getRenters(e) {
+  async getRenters(e) {
     // получаем арендаторов (срабатывает при клике на кнопку "показать всех")
     e.preventDefault(); 
     var self = this;
     this.setState({loading: true})
     this.state.visible === 1 ? this.setState({ visible: 0 }) : this.setState({ visible: 1 });
-    $.ajax({ 
+    await $.ajax({ 
       url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`,
       type: 'POST',
       success: function(res) {
@@ -76,7 +77,7 @@ class Reestr extends Component {
     const formData = new FormData();
     formData.append('visible', this.state.visible === 1 ?  0 : 1);
     // получаем договора
-    $.ajax({ 
+    await $.ajax({ 
       url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read.php`,
       data        : formData,
       processData : false,
@@ -89,13 +90,13 @@ class Reestr extends Component {
         console.log(err);
       }
     });
-    // симулируем задержку получения данных
-    // скрываем арендаторов без договора
-    setTimeout(() => {
-      this.setState({ loading: false });
+    
+    // по окончанию убираем спиннер
+    await (function() {
+      self.setState({ loading: false });
       const F = new Functions();
-      F.hideRenters();
-    }, 500);
+      F.hideRenters(); // прячем арендаторов без договоров
+    })();
   }
 
   // Toggle при клике на арендатора и договора
@@ -122,7 +123,7 @@ class Reestr extends Component {
           return (  
           <RenterContainer key={`renter-${i}`} onClick={this.toggleRenterDetails} className='renter'>   
             <h2>{renter.short_name} — Баланс: 
-              {renter.balance > 0 ? <span style={{'color':'green'}}> {renter.balance} ₽ </span> : <span style={{'color':'red'}}> {renter.balance} ₽</span>}
+              {renter.balance >= 0 ? <span style={{'color':'green'}}> {renter.balance} ₽ </span> : <span style={{'color':'red'}}> {renter.balance} ₽</span>}
             </h2>
             <RenterDetails style={{'display':'none'}} className='renter-details'>
               <p><b>ИНН:</b> {renter.inn} / <b>КПП:</b> {renter.kpp}</p>

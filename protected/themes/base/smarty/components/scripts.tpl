@@ -7,9 +7,12 @@
         [ 'file' => '/js/app.min.js' ]
     ]
 } 
-  <script src='/frontend/build/static/js/1.801eebb9.chunk.js'></script>
-  <script src='/frontend/build/static/js/main.39402459.chunk.js'></script>
+  <script src='/frontend/build/static/js/1.94630282.chunk.js'></script>
+  <script src='/frontend/build/static/js/main.c95841d9.chunk.js'></script>
   <script src='/frontend/build/static/js/runtime~main.229c360f.js'></script>
+
+  <script src='/js/jquery.min.js'></script>
+  <script src='/js/string_sum.js'></script>
 
 </body>
 </html>

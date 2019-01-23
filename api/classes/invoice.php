@@ -35,7 +35,7 @@ class Invoice
     }
 
     function read_all() {   
-      $invoices = Q("SELECT * FROM `#_mdd_invoice`", array())->all();
+      $invoices = Q("SELECT * FROM `#_mdd_invoice` ORDER BY `id` DESC", array())->all();
 
       return $invoices;
     }
@@ -44,7 +44,8 @@ class Invoice
     function read_renter_year($renter, $year) {   
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `renter` = ?s 
-            AND `period_year` = ?s", array($renter, $year))->all();
+            AND `period_year` = ?s
+            ORDER BY `id` DESC", array($renter, $year))->all();
   
         return $invoices;
     }
@@ -53,14 +54,16 @@ class Invoice
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `renter` = ?s 
             AND `period_year` = ?s
-            AND `period_month` = ?s", array($renter, $year, $month))->all();
+            AND `period_month` = ?s
+            ORDER BY `id` DESC", array($renter, $year, $month))->all();
   
         return $invoices;
     }
 
     function read_year($year) {   
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
-            WHERE `period_year` = ?s", array($year))->all();
+            WHERE `period_year` = ?s
+            ORDER BY `id` DESC", array($year))->all();
   
         return $invoices;
     }
@@ -68,7 +71,8 @@ class Invoice
     function read_year_month($year, $month) {   
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `period_year` = ?s 
-            AND `period_month` = ?s", array($year, $month))->all();
+            AND `period_month` = ?s
+            ORDER BY `id` DESC", array($year, $month))->all();
   
         return $invoices;
     }  
@@ -76,7 +80,7 @@ class Invoice
     function read_by_contract($id) {   
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `contract_id` = ?s 
-            ORDER BY `invoice_number`", array($id))->all();
+            ORDER BY `id` DESC", array($id))->all();
   
         return $invoices;
     }  
@@ -84,7 +88,7 @@ class Invoice
     function read_by_renter_fullname($fullname) {   
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `renter` = ?s 
-            ORDER BY `invoice_number`", array($fullname))->all();
+            ORDER BY `id` DESC", array($fullname))->all();
   
         return $invoices;
     }  

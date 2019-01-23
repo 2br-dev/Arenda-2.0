@@ -222,7 +222,7 @@ class Account extends Component {
                 </p>
                 <hr />
                 <div className='invoice-details' style={{'display':'none'}} data-block={invoice.renter_id}>
-                {invoice.summa >= invoice.discount ?(<React.Fragment>
+                {invoice.summa >= invoice.discount || renter.balance < 0 ?(<React.Fragment>
                     <Row>
                       <b>Счет</b> 
                       <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=0&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
@@ -249,27 +249,27 @@ class Account extends Component {
                     </Row>
                     </React.Fragment> ) : (<React.Fragment>   
                       <Row>
-                        <b>Счет</b>
+                        <b>Счет со скидкой</b>
                         <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a> 
                       </Row>
                       <Row>
-                        <b>Акт</b>
+                        <b>Акт со скидкой</b>
                         <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
                       </Row>
                       <Row>
-                        <b>Счет-фактура</b>
+                        <b>Счет-фактура со скидкой</b>
                         <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
                       </Row>
                       <Row>
-                        <b>Счет+печать</b>
+                        <b>Счет+печать со скидкой</b>
                         <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
                       </Row>
                       <Row>
-                        <b>Акт+печать</b>
+                        <b>Акт+печать со скидкой</b>
                         <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
                       </Row>
                       <Row>
-                        <b>Счет-фактура+печать</b>
+                        <b>Счет-фактура+печать со скидкой</b>
                         <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
                       </Row>
                     </React.Fragment> )}

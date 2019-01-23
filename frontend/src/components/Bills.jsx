@@ -46,12 +46,14 @@ class Bills extends Component {
       allSum.push($(this).data('sum'));
     });
     
+    const modifiedArr = [];
     $("input[name='period_sum']:enabled").each(function() {
       if ($(this).val() === '') {
         index++;
       } else {
         allSum[index] = $(this).val();
         index++;
+        modifiedArr.push($(this).data('id'));
       }
     }); 
 
@@ -68,8 +70,10 @@ class Bills extends Component {
       date:               $("input[name='date']").val(),
       summa_id:           allId,
       period_sum:         allSum,
+      modified:           modifiedArr
     };
 
+    console.log(data);
     // если все поля заполнены делаем запрос
     if (data.month && data.year && data.renter.length !== 0) {
       $("input[name='period_sum']").prop('disabled', true);         

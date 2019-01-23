@@ -185,7 +185,8 @@ input[type='text'], input[type='date'], input[type='number'] {
   width: 200px;
   padding: 5px 10px;
   border-radius: 10px;
-  border: 1px solid #2323;  
+  border: 1px solid #2323; 
+  background: #fff; 
 }
 input:disabled {
   background: lightblue;

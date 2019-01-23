@@ -4,10 +4,15 @@ header("Content-Type: application/json; charset=UTF-8");
 
 include_once '../../define.php'; 
 include_once '../config/database.php';
+include_once '../classes/contract.php';
 
 // подключаемся к БД
 $database = new Database();
 $db = $database->getConnection(); 
+$Contracts = new Contract($db);
+
+//если что-то модифицировано, то устанавливаем метку в бд
+$Contracts->setModified(__post('modified'), $db);
 
 // получаем ID последнего номера счёта
 $last_invoice = Q("SELECT MAX(`id`) as `number` FROM `#_mdd_invoice`")->row('number');
@@ -44,9 +49,7 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
     // ID текущего договора 
     $contract_id = $_POST['summa_id'][$index];
 
-
     $start_arenda = explode('.', $contracts_for_schet['start_arenda']); // Парсим дату начала аренды из договора
-
     // Проверяем совпадают ли месяц начала аренды (меньше или равно) в договоре с месяцем выставляемого счета и равен ли год
     if (($start_arenda[1] == $month['month_number']) && ($start_arenda[2] == $_POST['year'])){
       // Если да, и день начала аренды ревен 1 то колличество в счете = 1	
@@ -124,7 +127,7 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
       'payment_info' => '',
       'summa'	=> $summa,
       'amount' => $amount,
-      'discount' => $discount,
+      'discount' => number_format(intval($discount),2,".",""),
       'rest' => $rest, 
       'number_index' => 0,
       'schet_id' => $number_schet,

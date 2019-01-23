@@ -72,5 +72,14 @@ class Contract
         
         return $contracts; 
     }
+
+    function setModified($contracts, $db) {
+        if(!empty($contracts)) {
+            foreach($contracts as $contract_id) {
+                $sql = "UPDATE `db_mdd_contracts` SET `modified` = 1 WHERE `db_mdd_contracts`.`id` = '$contract_id'";
+                $db->query($sql);
+            }
+        }
+    }
   
 }

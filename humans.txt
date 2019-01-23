@@ -1,1 +1,4 @@
 serhserhserh
+
+UPDATE `db_mdd_contracts` SET `balance` = 0
+UPDATE `db_mdd_renters` SET `balance` = 0

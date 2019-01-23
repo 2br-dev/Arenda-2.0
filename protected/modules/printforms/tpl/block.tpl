@@ -168,7 +168,7 @@
 					{if $peni == 1}
 						<p><input style="width: 97%;" type="text" value="( {$allpeni.string} )"></p>
 						{else}
-						<p><input style="width: 97%;" type="text" class='numeric-sum' value="обновите страницу"></p>
+						<p><input style="width: 100% !important; max-width: unset;" type="text" class='numeric-sum' value="обновите страницу"></p>
 					{/if}					
 					
 				</div>
@@ -252,7 +252,7 @@
 				</table>
 				<div style="clear: both;"></div>
 				<div class="podval">
-					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму <strong><input type="text" value="{$print.allprice_string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму:  <strong> <input type="text" value="{$print.allprice_string}"> </strong> в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					<p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p>
 				</div>
 				{else}
@@ -320,12 +320,12 @@
 				<div style="clear: both;"></div>
 				<div class="podval">
 				{if $peni == 1}
-					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" value="{$allpeni.string}"></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+					<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму: <strong> <input style="width: 100% !important; max-width: unset;" type="text" class='numeric-sum' value="{$allpeni.string}"></strong> в т.ч.: НДС - Ноль рублей 00 копеек</p>
 				{else}
 					{if $disc == 1}
-						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" class='numeric-sum' value=""></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму: <strong> <input style="width: 100% !important; max-width: unset;" type="text" class='numeric-sum' value=""></strong> в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					{else}
-						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму<strong><input type="text" class='numeric-sum' value=""></strong>, в т.ч.: НДС - Ноль рублей 00 копеек</p>
+						<p style="font-style: italic; font-size: 12px;">Всего оказано услуг на сумму: <strong> <input style="width: 100% !important; max-width: unset;" type="text" class='numeric-sum' value=""></strong> в т.ч.: НДС - Ноль рублей 00 копеек</p>
 					{/if}
 				{/if}	
 					<p style="font-style: italic; font-size: 12px;">Вышеперечисленные услуги выполненые полностью и в срок. Заказчик претензий по объему, качеству и срокам оказания услуг не имеет</p>
@@ -692,6 +692,7 @@
 	</div>
 	{/if}	
 </div>
+
 
 <style>
 	tr, td {

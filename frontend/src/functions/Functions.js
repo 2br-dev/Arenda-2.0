@@ -57,6 +57,50 @@ class Functions {
     return monthNumber; 
   }
 
+  getStringOfMonth(month) {
+    let monthNumber = '00';
+    switch(month) {
+      case '01':
+        monthNumber = 'Январь'; 
+        break; 
+      case '02':
+        monthNumber = 'Февраль'; 
+        break;
+      case '03':
+        monthNumber = 'Март'; 
+        break;
+      case '04':
+        monthNumber = 'Апрель'; 
+        break; 
+      case '05':
+        monthNumber = 'Май'; 
+        break;
+      case '06':
+        monthNumber = 'Июнь'; 
+        break;
+      case '07':
+        monthNumber = 'Июль';  
+        break;
+      case '08':
+        monthNumber = 'Август'; 
+        break;
+      case '09':
+        monthNumber = 'Сентябрь'; 
+        break;
+      case '10':
+        monthNumber = 'Октябрь';  
+        break;
+      case '11':
+        monthNumber = 'Ноябрь'; 
+        break;
+      case '12':
+        monthNumber = 'Декабрь';         
+        break;
+      default: 
+    }  
+    return monthNumber; 
+  }
+
   setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));

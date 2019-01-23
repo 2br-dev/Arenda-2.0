@@ -21,7 +21,7 @@ export default class MainPage extends Component {
   switchComponent = () => {
     switch(this.state.url) {
       case '':
-        return <Print />  
+        return <Payments />  
       case 'reestr':
         return <Reestr /> 
       case 'bills':
