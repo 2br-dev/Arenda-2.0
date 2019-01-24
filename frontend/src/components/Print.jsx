@@ -62,7 +62,7 @@ class Print extends Component {
               self.openModal('Нет счетов за выбранный период.'); 
             }
           } else {
-            self.openModal('Что-то пошло не так.'); // если нет - говорим пользователю
+            self.openModal('Что-то пошло не так.'); // говорим юзеру
           }
         },
         error: function(err) {
@@ -70,7 +70,7 @@ class Print extends Component {
         }
       });
     } else {
-      self.openModal('Пожалуйста, выберите год'); // если нет - подсказка пользователю
+      self.openModal('Пожалуйста, выберите год'); // подсказка юзеру
     }
   }
 
@@ -134,6 +134,7 @@ class Print extends Component {
   render() {
     const { loading, selectedRenter } = this.state;
     const store = this.props.testStore;
+    const F = new Functions();
 
     return (
     <section className='container' style={{ 'width':'800px', 'paddingTop': '100px' }}> 
@@ -193,9 +194,12 @@ class Print extends Component {
           <RenterInfo>
             <div>
               <p style={{ 'margin':'0' }}><b>{inv.renter}</b></p>
-              <p style={{ 'margin':'0' }}> № счёта: <b>{inv.invoice_number}</b>, на сумму: <b>{inv.summa}₽</b>, от: <b>{inv.invoice_date} </b> 
-                {inv.modified ? <span style={{ color:'yellow' }}> (модифицирован)</span> :null}
-              </p>
+              <span style={{ 'margin':'0' }}> 
+                № счёта:<b className='ml5'>{inv.invoice_number}</b>, 
+                на сумму:<b className='ml5'>{inv.summa}₽</b>, 
+                за: <b className='ml5'>{F.getStringOfMonth(inv.period_month)}, {inv.period_year} </b> 
+                {inv.modified === '1' ? <p className='ml5' style={{ color:'cornflowerblue' }}> (модифицирован)</p> :null}
+              </span>
             </div>
             <span onClick={this.handleDelete} className='btn' data-invoice={inv.invoice_number} data-contract={inv.contract_id}>удалить<img src={DeleteIcon} alt=''/></span>
           </RenterInfo>

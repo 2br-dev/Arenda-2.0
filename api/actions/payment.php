@@ -22,9 +22,6 @@ $invoices        = __post('invoices');
 if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isset($renter_name) 
   && isset($renter_document) && isset($id) && isset($invoices)) {
 
-  // количество дней в месяце
-  $number_of_days = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-
   // парсим необходимые даты
   $date = explode('-', $date);
   $payment_year = intval($date[0]);
@@ -40,8 +37,9 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
   $renter_full_name = Q("SELECT `full_name` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('full_name');
 
   // работаем с пени
-  $Peni->pay($date, $invoices, $renter_document, $summa, $renter_id, $id, $renter_full_name, $payment_year, $payment_month, $payment_day, $db, $number_of_days, $peni_percent);
+ $Peni->pay($date, $invoices, $renter_document, $summa, $renter_id, $id, $renter_full_name, $payment_year, $payment_month, $payment_day, $db, $peni_percent);
 
+  
   // записываем оплату
   O('_mdd_payments')->create(array(
     'renter_name' => $renter_name,
