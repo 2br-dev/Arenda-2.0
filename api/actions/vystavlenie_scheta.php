@@ -45,14 +45,15 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
     $contract_id = $_POST['summa_id'][$index];
 
     $start_arenda = explode('.', $contracts_for_schet['start_arenda']); // Парсим дату начала аренды из договора
+
     // Проверяем совпадают ли месяц начала аренды (меньше или равно) в договоре с месяцем выставляемого счета и равен ли год
-    if (($start_arenda[1] == $month['month_number']) && ($start_arenda[2] == $_POST['year'])){
+    if ((intval($start_arenda[1]) == intval($month['month_number'])) && (intval($start_arenda[2]) == intval($_POST['year']))){
       // Если да, и день начала аренды ревен 1 то колличество в счете = 1	
       if ($start_arenda[0] == '01') {
         $amount = 1;
       } else {  // Если день начала аренды больше 1, то колличество дней аренды в текущем месяце в счете вычисляется
-        $days_arenda = $month['days'] - $start_arenda[0] + 1;
-        $amount = $days_arenda / $month['days'];			
+        $days_arenda = intval($month['days']) - intval($start_arenda[0]) + 1;
+        $amount = $days_arenda / intval($month['days']);		
       }
     }
     else {

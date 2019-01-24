@@ -75,7 +75,7 @@ class Reestr extends Component {
     });
 
     const formData = new FormData();
-    formData.append('visible', this.state.visible === 1 ?  0 : 1);
+    formData.append('visible', this.state.visible);
     // получаем договора
     await $.ajax({ 
       url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read.php`,
