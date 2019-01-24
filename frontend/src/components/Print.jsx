@@ -193,7 +193,9 @@ class Print extends Component {
           <RenterInfo>
             <div>
               <p style={{ 'margin':'0' }}><b>{inv.renter}</b></p>
-              <p style={{ 'margin':'0' }}> № счёта: <b>{inv.invoice_number}</b>, на сумму: <b>{inv.summa}₽</b>, от: <b>{inv.invoice_date}</b></p>
+              <p style={{ 'margin':'0' }}> № счёта: <b>{inv.invoice_number}</b>, на сумму: <b>{inv.summa}₽</b>, от: <b>{inv.invoice_date} </b> 
+                {inv.modified ? <span style={{ color:'yellow' }}> (модифицирован)</span> :null}
+              </p>
             </div>
             <span onClick={this.handleDelete} className='btn' data-invoice={inv.invoice_number} data-contract={inv.contract_id}>удалить<img src={DeleteIcon} alt=''/></span>
           </RenterInfo>

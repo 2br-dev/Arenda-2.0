@@ -4,15 +4,10 @@ header("Content-Type: application/json; charset=UTF-8");
 
 include_once '../../define.php'; 
 include_once '../config/database.php';
-include_once '../classes/contract.php';
 
 // подключаемся к БД
 $database = new Database();
 $db = $database->getConnection(); 
-$Contracts = new Contract($db);
-
-//если что-то модифицировано, то устанавливаем метку в бд
-$Contracts->setModified(__post('modified'), $db);
 
 // получаем ID последнего номера счёта
 $last_invoice = Q("SELECT MAX(`id`) as `number` FROM `#_mdd_invoice`")->row('number');
@@ -36,7 +31,7 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
 
     // получаем массив с цифровым значение месяца, а так же кол-во дней в месяце из функции (fn.inc.php)
     $month = getMonthString($_POST['month']);
-
+    
     $contracts_for_schet = Q("SELECT * from `#_mdd_contracts` as `contract` WHERE `contract`.`renter` = ?i", array($_POST['renter'][$index]))->row();
     $status = 1;
     $renter = Q("SELECT * from `#_mdd_renters` as `renter` WHERE `renter`.`id` = ?i", array($value))->row();
@@ -135,7 +130,8 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
       'akt_id' => $number_schet,
       'akt_number' => $number_schet,
       'akt_date' => $lastdaydate,
-      'sf_date' => $lastdaydate						
+      'sf_date' => $lastdaydate,
+      'modified' => $_POST['modified'][$index],
     ));	
 
     // баланс в таблице баланса
@@ -159,7 +155,6 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
     // если индекс равен длинна массива, то индекс равен 0
     $index == count($_POST['summa_id']) ? $index = 0 : '';
     	
-
   }					
 }
 				

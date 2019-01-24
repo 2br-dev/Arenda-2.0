@@ -72,14 +72,34 @@ class Contract
         
         return $contracts; 
     }
-
-    function setModified($contracts, $db) {
-        if(!empty($contracts)) {
-            foreach($contracts as $contract_id) {
-                $sql = "UPDATE `db_mdd_contracts` SET `modified` = 1 WHERE `db_mdd_contracts`.`id` = '$contract_id'";
-                $db->query($sql);
-            }
-        }
-    }
   
+    function payWithDiscount($invoice, $renter_id, $id, $summa, $db){
+        // берём скидку и сумму по текущему счёту
+        $discount = Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i", array($invoice))->row('discount');
+        $cur_summa = Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i", array($invoice))->row('summa');
+          
+        // остаток разнице скидки с разницой суммы и оставшейся суммы после оплаты пени
+        $rest = $discount - ($cur_summa - $summa);
+        $updated_balance = $cur_summa - $discount;
+  
+        // берём баланс арендатора и баланс договора
+        $balance = Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('balance');
+        $contract_balance = Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('balance');
+             
+        // плюсуем разницу
+        $balance += $updated_balance;
+        $contract_balance += $updated_balance;
+             
+        // апдейтим для счёта сумму и остаток
+        $upd_summa          = "UPDATE `db_mdd_invoice` SET `summa` = '$discount' WHERE `invoice_number` = '$invoice'";
+        $upd_rest           = "UPDATE `db_mdd_invoice` SET `rest` = '$rest' WHERE `invoice_number` = '$invoice'";
+        $db->query($upd_summa);
+        $db->query($upd_rest);
+
+        // запрашиваем изменения балансов
+        $sql_balance        = "UPDATE `db_mdd_renters` SET `balance` = '$balance' WHERE `db_mdd_renters`.`id` = '$renter_id'";
+        $sql_cont_balance   = "UPDATE `db_mdd_contracts` SET `balance` = '$contract_balance' WHERE `db_mdd_contracts`.`id` = '$id'";
+        $db->query($sql_balance);
+        $db->query($sql_cont_balance);
+    }
 }

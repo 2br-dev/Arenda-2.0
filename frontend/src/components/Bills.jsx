@@ -49,12 +49,12 @@ class Bills extends Component {
     const modifiedArr = [];
     $("input[name='period_sum']:enabled").each(function() {
       if ($(this).val() === '') {
-        index++;
+        modifiedArr.push(0);
       } else {
         allSum[index] = $(this).val();
-        index++;
-        modifiedArr.push($(this).data('id'));
+        modifiedArr.push(1);
       }
+      index++;
     }); 
 
     // переводим в нужный формат цифру для SQL

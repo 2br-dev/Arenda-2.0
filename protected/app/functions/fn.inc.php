@@ -403,16 +403,3 @@ function morph($n, $f1, $f2, $f5)
     return $f5;
 }
 
-function record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni) {
-    O('_mdd_balance')->create(array(
-        'renter_id' => $renter_id,
-        'contract_id' => $id,
-        'balance' => $contract_balance + $payed_peni['peni'],
-        'ground' => 'peni-payment',
-        'contract' => $renter_document,
-        'date' => $invoice_date,
-        'renter' => $renter_full_name,
-        'ground_id' => $payed_peni['peni_invoice'],
-        'summa' => $payed_peni['peni'],
-    ));
-}
