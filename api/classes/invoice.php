@@ -96,31 +96,36 @@ class Invoice
     function payWithDiscount($invoice, $renter_id, $id, $summa, $db){
         // берём скидку и сумму по текущему счёту
         $discount           =   Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i", array($invoice))->row('discount');
-        $cur_summa          =   Q("SELECT `summa`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i", array($invoice))->row('summa');
-          
-        if (intval($cur_summa) < intval($discount)) {
+        $contract_summa =   Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('summa');
 
+        if (intval($summa) < intval($discount) ) {
             // ֎ внимание - хитрые вычисления ֎
             // в таком случае нам нужно произведение $текущей суммы по счёту и отношения $скидки и $суммы по договору 
-            $contract_summa =   Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('summa');
-            $final_sum      =   intval($cur_summa * ($discount / $contract_summa));
+            $final_sum      =   intval($summa * ($discount / $contract_summa));
         } else {
             $final_sum      =   $discount;
         }
   
-        // берём баланс арендатора и баланс договора
-        $balance            =   Q("SELECT `balance` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('balance');
-        $contract_balance   =   Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('balance');
-      
-        $balance            =   $balance - $balance - $final_sum;
-        $contract_balance   =   $contract_balance - $contract_balance  - $final_sum;
+        $difference = $contract_summa - $final_sum;
 
-        $upd_summa          =   "UPDATE `db_mdd_invoice` SET `summa` = '$final_sum' WHERE `invoice_number` = '$invoice'";
-        $upd_rest           =   "UPDATE `db_mdd_invoice` SET `rest` = '$final_sum' WHERE `invoice_number` = '$invoice'";
-        $sql_balance        =   "UPDATE `db_mdd_renters` SET `balance` = '$balance' WHERE `db_mdd_renters`.`id` = '$renter_id'";
-        $sql_cont_balance   =   "UPDATE `db_mdd_contracts` SET `balance` = '$contract_balance' WHERE `db_mdd_contracts`.`id` = '$id'";
-        $sql_all_balance    =   "UPDATE `db_mdd_balance` SET  `summa` = '$final_sum' WHERE `ground_id` = '$invoice'";
-        $sql_rest_balance   =   "UPDATE `db_mdd_balance` SET  `balance` = '$contract_balance' WHERE `ground_id` = '$invoice'";
+        // так же нам нужно обновить все остальные балансы по этому договору
+        $balance_id = Q("SELECT `id` FROM `#_mdd_balance` WHERE `ground_id` = ?s", array($invoice))->row('id');
+        $update_rest_balance = "UPDATE `db_mdd_balance` 
+            SET `balance` = (`balance` + $difference) 
+            WHERE `id` > '$balance_id'
+            AND `contract_id` = '$id'";
+
+        $db->query($update_rest_balance);    
+
+        $upd_summa          =   "UPDATE `db_mdd_invoice`    SET `summa`     = '$final_sum'               WHERE `invoice_number` = '$invoice'";
+        $upd_rest           =   "UPDATE `db_mdd_invoice`    SET `rest`      = '$final_sum'                WHERE `invoice_number` = '$invoice'";
+
+        $sql_all_balance    =   "UPDATE `db_mdd_balance`    SET `summa`     = '$final_sum'               WHERE `ground_id` = '$invoice'"; 
+        $sql_rest_balance   =   "UPDATE `db_mdd_balance`    SET `balance`   = (`balance` + '$difference')  WHERE `ground_id` = '$invoice'";  
+
+        $sql_balance        =   "UPDATE `db_mdd_renters`    SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_renters`.`id` = '$renter_id'";
+        $sql_cont_balance   =   "UPDATE `db_mdd_contracts`  SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_contracts`.`id` = '$id'";
+
 
         $db->query($upd_summa);
         $db->query($upd_rest);

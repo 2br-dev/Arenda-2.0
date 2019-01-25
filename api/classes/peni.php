@@ -1,4 +1,5 @@
 <?php
+
 include_once '../../define.php';
 include_once '../classes/invoice.php';
 
@@ -79,17 +80,17 @@ class Peni
         return $difference;
     }
 
-    function record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni) {
+    function record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni, $summa) {
         O('_mdd_balance')->create(array(
             'renter_id' => $renter_id,
             'contract_id' => $id,
-            'balance' => $contract_balance + $payed_peni['peni'],
+            'balance' => number_format(($contract_balance + $summa), 2, '.', ''),
             'ground' => 'peni-payment',
             'contract' => $renter_document,
             'date' => $invoice_date,
             'renter' => $renter_full_name,
             'ground_id' => $payed_peni['peni_invoice'],
-            'summa' => $payed_peni['peni'],
+            'summa' => number_format(($summa), 2, '.', ''),
         ));
     }
     
@@ -131,7 +132,7 @@ class Peni
                       $summa = 0;
           
                       // записываем всё в баланс (fn.ini.php)
-                      $this->record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni);
+                      $this->record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni, $summa);
 
                       // отнимаем из суммы пени по текущему счёту
                       $summa -= $payed_peni['peni'];
@@ -147,7 +148,7 @@ class Peni
                       
                       $summa = $peni_rest;
                       // записываем всё в баланс (fn.ini.php)
-                      $this->record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni);
+                      $this->record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni, $summa);
           
                       // отнимаем из суммы пени по текущему счёту
                       $summa -= $payed_peni['peni'];
@@ -164,7 +165,7 @@ class Peni
                       $db->query($upd_peni_rest);
 
                       // записываем всё в баланс (fn.ini.php)
-                      $this->record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni);
+                      $this->record_peni_balance($renter_id, $id, $contract_balance, $renter_document, $invoice_date, $renter_full_name, $payed_peni, $summa);
           
                       // отнимаем из суммы пени по текущему счёту
                       $summa -= $payed_peni['peni'];
@@ -198,7 +199,7 @@ class Peni
             if (intval($days_difference) < intval($discount_days) && intval($invoice_month) >= intval($payment_month) && intval($invoice_year) >= intval($payment_year) && intval($summa) != 0) {            
                 // и оплачиваем
                 $Invoice = new Invoice($db);
-                $Invoice->payWithDiscount($invoice, $renter_id, $id, $summa, $db); // оплачиваем со скидкой
+                $summa = $Invoice->payWithDiscount($invoice, $renter_id, $id, $summa, $db); // оплачиваем со скидкой
             }
            
             
@@ -209,7 +210,8 @@ class Peni
                 // берём сумму и коэффициент по текущему счёту
                 $cur_summa = Q("SELECT `rest`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i ORDER BY `id` DESC", array($invoice))->row('summa');
                 $cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `invoice_number` = ?i ORDER BY `id` DESC", array($invoice))->row('amount');
-          
+                $cur_summa = $cur_summa['rest'];
+
                 // за этот месяц будет начислять пени и мы можем подсчитать
                 $peni = number_format(($peni_delay * $cur_summa * $peni_percent), 2, '.', '');
                 $peni_amount = $peni_delay * $peni_in_contract;
@@ -254,7 +256,7 @@ class Peni
                 O('_mdd_balance')->create(array(
                     'renter_id' => $renter_id,
                     'contract_id' => $id,
-                    'balance' => $contract_balance,
+                    'balance' => $new_balance,
                     'ground' => 'peni',
                     'contract' => $renter_document,
                     'date' => $invoice_date,
