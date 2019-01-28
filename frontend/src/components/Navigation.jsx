@@ -32,7 +32,10 @@ export default class Navigation extends Component {
                 <Link to='/print' onClick={() => this.props.handleChangeUrl('print')}>Печать счетов</Link>
               </li>
               <li>
-                <Link to='/payments'onClick={() => this.props.handleChangeUrl('payments')}>Оплаты</Link>
+                <Link to='/payments' onClick={() => this.props.handleChangeUrl('payments')}>Оплаты</Link>
+              </li> 
+              <li>
+                <Link to='/history' onClick={() => this.props.handleChangeUrl('history')}>История</Link>
               </li> 
             </React.Fragment>) : null}
             <Li>

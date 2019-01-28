@@ -18,8 +18,8 @@
 	<link rel="home" href="/">
 	<!-- CSS -->
 	<link type="text/css" rel="stylesheet" href="/css/normalize.css" >
-	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/1.2f766bf4.chunk.css" >
-	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.d952859b.chunk.css" >
+	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/1.545afeb8.chunk.css" >
+	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.0cad9bb3.chunk.css" >
 </head>
 <body class="page-{$_page.system}">
 {/strip}

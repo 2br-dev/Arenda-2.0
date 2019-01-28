@@ -48,9 +48,6 @@ class Peni
 
     function countDayDifference($start_arenda, $payment_date, $invoice) {
 
-        // приводим дату оплаты к треб. формату
-        $payment_date = implode($payment_date, '/');
-
         // берём переменную так как она нам будет нужна
         $start = $start_arenda;
 
@@ -94,7 +91,11 @@ class Peni
         ));
     }
     
-    function pay($payment_date, $invoices, $renter_document, $summa, $renter_id, $id, $renter_full_name, $payment_year, $payment_month, $payment_day, $db, $peni_percent) {
+    function pay($payment_date, $date, $invoices, $renter_document, $summa, $renter_id, $id, $renter_full_name, $db, $peni_percent) {
+        
+        $payment_year = intval($date[0]);
+        $payment_month = intval($date[1]);
+        $payment_day = intval($date[2]);
         
         foreach($invoices as $invoice) {   
             // все неоплаченные пени
@@ -105,6 +106,10 @@ class Peni
 
             // дата начала аренды по договору
             $start_arenda = Q("SELECT `start_arenda` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_arenda');
+            //первый месяц и год аренды по договору
+            $start_arenda_dates = explode('.', $start_arenda);
+            $start_arenda_month = intval($start_arenda_dates[1]);
+            $start_arenda_year = intval($start_arenda_dates[2]);
 
             // баланс в контракте 
             $contract_balance = intval(Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('balance'));
@@ -185,19 +190,33 @@ class Peni
             $peni_in_contract = Q("SELECT `peni` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('peni');
       
             // количество дней когда будет скидка 
-            if ($invoice_month == $payment_month) { // если первый месяц берём из переменной
+            if ($start_arenda_month == $payment_month && $start_arenda_year == $payment_year) { // если первый месяц берём из переменной
                 $discount_days = Q("SELECT `discount_days` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('discount_days');
             } else { // иначе 5 дней
-                $discount_days = 5;
+                $discount_days = 4;      
             }
-            
 
             // находим разницу в днях, когда был оплачен счёт
-            $days_difference = $this->countDayDifference($start_arenda, $payment_date, $invoice, $discount_days);                   
-            
+            $days_difference = $this->countDayDifference($start_arenda, $payment_date, $invoice, $discount_days);  
+
+/*          echo '---payment_date is---'.$payment_date; 
+            echo '---discount days is---'.$discount_days;
+            echo '---start_arenda_month is---'.$start_arenda_month; 
+            echo '---payment_month is---'.$payment_month; 
+            echo '---start_arenda_year is---'.$start_arenda_year; 
+            echo '---payment_year is---'.$payment_year;                  
+            echo '---$days_difference is---'.$days_difference;  */
+
             //проверяем дату когда был оплачен счёт на предмет соответсвия скидке
-            if (intval($days_difference) < intval($discount_days) && intval($invoice_month) >= intval($payment_month) && intval($invoice_year) >= intval($payment_year) && intval($summa) != 0) {            
+            if (
+                intval($days_difference)  <=  intval($discount_days) && 
+                intval($invoice_month)    >=  intval($payment_month) && 
+                intval($invoice_year)     >=  intval($payment_year) && 
+                intval($summa)            !=  0
+            ) {            
                 // и оплачиваем
+                /* echo '---skidka is true---';  */
+
                 $Invoice = new Invoice($db);
                 $summa = $Invoice->payWithDiscount($invoice, $renter_id, $id, $summa, $db); // оплачиваем со скидкой
             }

@@ -24,9 +24,6 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
 
   // парсим необходимые даты
   $date = explode('-', $date);
-  $payment_year = intval($date[0]);
-  $payment_month = intval($date[1]);
-  $payment_day = intval($date[2]);
 
   // получаем информация о пени по договору (сумма и процент)
   $peni_info = $Peni->get_info($id); 
@@ -37,7 +34,7 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
   $renter_full_name = Q("SELECT `full_name` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('full_name');
 
   // работаем с пени
- $Peni->pay($date, $invoices, $renter_document, $summa, $renter_id, $id, $renter_full_name, $payment_year, $payment_month, $payment_day, $db, $peni_percent);
+ $Peni->pay(__post('date'), $date, $invoices, $renter_document, $summa, $renter_id, $id, $renter_full_name, $db, $peni_percent);
 
   
   // записываем оплату

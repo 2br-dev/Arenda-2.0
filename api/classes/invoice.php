@@ -97,16 +97,15 @@ class Invoice
         // берём скидку и сумму по текущему счёту
         $discount           =   Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i", array($invoice))->row('discount');
         $contract_summa =   Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('summa');
+        $invoice_summa  =   Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i", array($invoice))->row('summa');
 
         if (intval($summa) < intval($discount) ) {
-            // ֎ внимание - хитрые вычисления ֎
-            // в таком случае нам нужно произведение $текущей суммы по счёту и отношения $скидки и $суммы по договору 
-            $final_sum      =   intval($summa * ($discount / $contract_summa));
+            $final_sum      =   intval($summa * ($discount / $contract_summa));        
+            $difference     =   $invoice_summa - $final_sum;
         } else {
             $final_sum      =   $discount;
+            $difference     =   $contract_summa - $final_sum;
         }
-  
-        $difference = $contract_summa - $final_sum;
 
         // так же нам нужно обновить все остальные балансы по этому договору
         $balance_id = Q("SELECT `id` FROM `#_mdd_balance` WHERE `ground_id` = ?s", array($invoice))->row('id');
@@ -125,7 +124,6 @@ class Invoice
 
         $sql_balance        =   "UPDATE `db_mdd_renters`    SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_renters`.`id` = '$renter_id'";
         $sql_cont_balance   =   "UPDATE `db_mdd_contracts`  SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_contracts`.`id` = '$id'";
-
 
         $db->query($upd_summa);
         $db->query($upd_rest);

@@ -24,11 +24,15 @@ class Payments extends Component {
   }
 
   componentDidMount = () => {
+    this.fetchData();
+  }
+
+  fetchData = () => {
     fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`)
-      .then(response => response.json())
-      .then(res => this.props.getRenters(res)) 
-      .then(() => this.setState({ loading: false }))
-      .catch(err => console.log(err)) 
+    .then(response => response.json())
+    .then(res => this.props.getRenters(res)) 
+    .then(() => this.setState({ loading: false }))
+    .catch(err => console.log(err)) 
   }
 
   // оплата
@@ -67,6 +71,7 @@ class Payments extends Component {
         success: function(res){
           console.log(res);
           self.openModal('Успешно!');
+          self.fetchData();
           $('#payments').trigger("reset"); // при успехе ресет формы
         },
         error: function(err) {

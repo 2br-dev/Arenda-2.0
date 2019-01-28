@@ -4,6 +4,7 @@ import Reestr from './Reestr'
 import Bills from './Bills'
 import Print from './Print'
 import Payments from './Payments'
+import CustomizedTable from './History'
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -30,13 +31,15 @@ export default class MainPage extends Component {
         return <Print /> 
       case 'payments':
         return <Payments /> 
+      case 'history':
+        return <CustomizedTable /> 
       default: 
         console.log('default');  
     }     
   }
 
   render() {
-    const { url } = this.state
+    const { url } = this.state;
 
     return (
       <React.Fragment>
