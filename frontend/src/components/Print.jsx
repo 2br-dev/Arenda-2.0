@@ -56,7 +56,7 @@ class Print extends Component {
         success: function(res){
           if (res.result === 1) {
             $('#pechat-schetov').trigger("reset"); // при успехе ресет формы
-            self.setState({ selectedRenter: '', selectedMonth: '', selectedYear: ''}) // и стейта
+            self.setState({ selectedMonth: '', selectedYear: ''}) // и стейта
             self.props.getInvoices(res.invoices); // отправляем в redux данные
             if(res.invoices.length === 0) {
               self.openModal('Нет счетов за выбранный период.'); 

@@ -31,13 +31,20 @@ class Payments extends Component {
     fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`)
       .then(response => response.json())
       .then(res => this.props.getRenters(res)) 
-      .then(
-        fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/invoice/read_all.php`)
-          .then(response => response.json())
-          .then(res => this.props.getInvoices(res)) 
-      )
       .then(() => this.setState({ loading: false }))
       .catch(err => console.log(err)) 
+  }
+
+  fetchInvoices = () => {
+    const self = this;
+    $.ajax({
+      type: "POST",
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/invoice/read_by_contract.php`,
+      data: { id: self.state.selectedContract },
+      success: function(res){
+        self.props.getInvoices(res);
+      }
+    });
   }
 
   // оплата
@@ -77,6 +84,7 @@ class Payments extends Component {
           console.log(res);
           self.openModal('Успешно!');
           self.fetchData();
+          self.fetchInvoices();
           $('#payments').trigger("reset"); // при успехе ресет формы
         },
         error: function(err) {

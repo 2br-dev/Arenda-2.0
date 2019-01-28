@@ -147,8 +147,8 @@ class Reestr extends Component {
                     <RenterContractDetails onClick={this.toggleContractDetails}>
                       
                       {contract.end_date !== '' 
-                        ? <p>{contract.number} от {contract.datetime}</p> 
-                        : <p>{contract.number} от {contract.datetime} <i>(безсрочно)</i></p>
+                        ? <p>{contract.contract_number} от {contract.datetime}</p> 
+                        : <p>{contract.contract_number} от {contract.datetime} <i>(безсрочно)</i></p>
                       }
 
                       {contract.status === '0' 
@@ -163,6 +163,7 @@ class Reestr extends Component {
                         <p><b>Номер на схеме:</b> {contract.number_scheme}</p>
                         <p><b>Площадь:</b> {contract.square}</p>
                         <p><b>Сумма договора:</b> {contract.summa}</p>
+                        <p><b>Сумма со скидкой:</b> {contract.discoint}</p>
                         <p><b>Срок Аренды:</b> с {contract.start_date} по {contract.end_date}</p>
                         <p><b>Размер пени:</b> {contract.peni}</p>
                         <p><b>Аренда начисляется с:</b> {contract.start_date}</p>
@@ -181,7 +182,7 @@ class Reestr extends Component {
 }
 
 const RenterContainer = styled.div`
-  width: 600px;
+  width: 700px;
   margin: 0 auto;
   text-align: center;
   h2 {

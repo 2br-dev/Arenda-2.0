@@ -7,6 +7,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Tooltip from '@material-ui/core/Tooltip';
+import $ from 'jquery';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -14,7 +17,7 @@ const CustomTableCell = withStyles(theme => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14
+    fontSize: 16
   },
 }))(TableCell);
 
@@ -33,6 +36,13 @@ const styles = theme => ({
       backgroundColor: theme.palette.background.default,
     },
   },
+  delete: {
+    '&:hover': {
+      cursor: 'pointer',
+      background: '#ffebee',
+      transition: '.37s ease'
+    }
+  },
   success: { color: 'green' },
   warning: { color: 'red' },
   bold: { fontWeight: 'bold' }
@@ -43,10 +53,14 @@ class CustomizedTable extends React.Component {
   state = { balances: [] }
    
   componentDidMount = () => {
+    this.fetchBalances();
+  }
+
+  fetchBalances = () => {
     fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/balance/read.php`)
-    .then(response => response.json())
-    .then(balances => this.setState({ balances })) 
-    .catch(err => console.log(err)) 
+      .then(response => response.json())
+      .then(balances => this.setState({ balances })) 
+      .catch(err => console.log(err)) 
   }
 
   renameString = string => {
@@ -58,17 +72,36 @@ class CustomizedTable extends React.Component {
       case 'schet':
         return 'счёт';
       case 'peni-payment':
-        return 'пени';
+        return 'оплата пени';
       default:
         return 'нет такого типа';
     }
+  }
+
+  deleteBalanceRecord = (id, renter, number, ground, ground_id, summa) => {
+    const self = this;
+    $.ajax({
+      type: "POST",
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/balance/delete.php`,
+      data: { id, renter, number, ground, ground_id, summa },
+      success: function(res){
+        console.log(res);
+        self.fetchBalances();
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });   
   }
   
   render() {
     const { classes } = this.props;
     const { balances } = this.state;
 
-    balances.forEach(balance => balance.ground = this.renameString(balance.ground));
+    balances.forEach(balance => {
+      balance.ground = this.renameString(balance.ground);
+      balance.balance = parseFloat(balance.balance);
+    });
 
     return (
       <Paper className={classes.root}>
@@ -82,6 +115,7 @@ class CustomizedTable extends React.Component {
               <CustomTableCell align="right">Дата</CustomTableCell>
               <CustomTableCell align="right">Старт аренды</CustomTableCell>
               <CustomTableCell align="right">Текущий баланс</CustomTableCell>
+              <CustomTableCell></CustomTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -101,6 +135,20 @@ class CustomizedTable extends React.Component {
                   >
                   { Number(balance.balance).toFixed(2) } ₽
                 </CustomTableCell>
+                {balance.ground === 'счёт' ? (
+                  <Tooltip disableFocusListener placement="right" disableTouchListener title="Удалить">
+                    <CustomTableCell 
+                      className={ classes.delete } 
+                      onClick={() => {
+                        this.deleteBalanceRecord(balance.id, balance.short_name, balance.contract, balance.ground, balance.ground_id, balance.summa)
+                      }}>
+                      <DeleteIcon />
+                    </CustomTableCell>  
+                  </Tooltip>  
+                ) : 
+                (
+                  <CustomTableCell></CustomTableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

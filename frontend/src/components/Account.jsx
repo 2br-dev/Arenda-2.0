@@ -222,7 +222,7 @@ class Account extends Component {
                 </p>
                 <hr />
                 <div className='invoice-details' style={{'display':'none'}} data-block={invoice.renter_id}>
-                {invoice.summa >= invoice.discount || renter.balance < 0 || invoice.modified ?(<React.Fragment>
+                {invoice.summa >= invoice.discount || renter.balance + invoice.summa <= 0 || invoice.modified ?(<React.Fragment>
                     <Row>
                       <b>Счет</b> 
                       <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=0&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
