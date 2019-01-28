@@ -33,22 +33,14 @@ const styles = theme => ({
       backgroundColor: theme.palette.background.default,
     },
   },
-  success: {
-    color: 'green'
-  },
-  warning: {
-    color: 'red'
-  },
-  bold: {
-    fontWeight: 'bold',
-  }
+  success: { color: 'green' },
+  warning: { color: 'red' },
+  bold: { fontWeight: 'bold' }
 });
 
 
 class CustomizedTable extends React.Component {
-  state = {
-    balances: [],
-  }
+  state = { balances: [] }
    
   componentDidMount = () => {
     fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/balance/read.php`)
@@ -76,9 +68,7 @@ class CustomizedTable extends React.Component {
     const { classes } = this.props;
     const { balances } = this.state;
 
-    balances.forEach(balance => {
-      balance.ground = this.renameString(balance.ground);
-    });
+    balances.forEach(balance => balance.ground = this.renameString(balance.ground));
 
     return (
       <Paper className={classes.root}>
@@ -96,20 +86,20 @@ class CustomizedTable extends React.Component {
           </TableHead>
           <TableBody>
             {balances.map(balance => (
-              <TableRow className={classes.row} key={balance.id}>
-                <CustomTableCell component="th" scope="row" className={classes.bold}>
-                  {balance.short_name}
+              <TableRow className={ classes.row } key={ balance.id }>
+                <CustomTableCell component="th" scope="row" className={ classes.bold }>
+                  { balance.short_name }
                 </CustomTableCell>
-                <CustomTableCell align="right">{balance.contract}</CustomTableCell>
-                <CustomTableCell align="right">{balance.ground}</CustomTableCell>
-                <CustomTableCell align="right">{Number(balance.summa).toFixed(2)} ₽</CustomTableCell>
-                <CustomTableCell align="right">{balance.date}</CustomTableCell>
-                <CustomTableCell align="right">{balance.start_arenda}</CustomTableCell>
+                <CustomTableCell align="right">{ balance.contract }</CustomTableCell>
+                <CustomTableCell align="right">{ balance.ground }</CustomTableCell>
+                <CustomTableCell align="right">{ Number(balance.summa).toFixed(2) } ₽ </CustomTableCell>
+                <CustomTableCell align="right">{ balance.date.split('-').reverse().join('.') }</CustomTableCell>
+                <CustomTableCell align="right">{ balance.start_arenda }</CustomTableCell>
                 <CustomTableCell 
                   align="right" 
-                  className={balance.balance < 0 ? classes.warning : classes.success}
+                  className={ balance.balance < 0 ? classes.warning : classes.success }
                   >
-                  {Number(balance.balance).toFixed(2)} ₽
+                  { Number(balance.balance).toFixed(2) } ₽
                 </CustomTableCell>
               </TableRow>
             ))}

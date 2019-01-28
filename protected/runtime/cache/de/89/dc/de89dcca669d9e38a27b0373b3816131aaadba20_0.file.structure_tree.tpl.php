@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-22 13:21:04
+/* Smarty version 3.1.32, created on 2019-01-28 15:03:29
   from 'C:\OpenServer\domains\arenda.local\protected\app\core\admin-template\view\structure\structure_tree.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c46ee90dc60a4_22798819',
+  'unifunc' => 'content_5c4eef9185b035_95800818',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c46ee90dc60a4_22798819 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c4eef9185b035_95800818 (Smarty_Internal_Template $_smarty_tpl) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['a_tree']->value, 'item');
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {

@@ -29,10 +29,15 @@ class Payments extends Component {
 
   fetchData = () => {
     fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`)
-    .then(response => response.json())
-    .then(res => this.props.getRenters(res)) 
-    .then(() => this.setState({ loading: false }))
-    .catch(err => console.log(err)) 
+      .then(response => response.json())
+      .then(res => this.props.getRenters(res)) 
+      .then(
+        fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/invoice/read_all.php`)
+          .then(response => response.json())
+          .then(res => this.props.getInvoices(res)) 
+      )
+      .then(() => this.setState({ loading: false }))
+      .catch(err => console.log(err)) 
   }
 
   // оплата
@@ -185,7 +190,7 @@ class Payments extends Component {
         </Select>
         :null}
 
-        {selectedRenter !== '' && selectedContract !== '' && store.invoices.map((invoice, i) => {  
+        {selectedRenter !== '' && selectedContract !== '' ? store.invoices.map((invoice, i) => {  
           if (invoice.rest > 0) {
             return (<React.Fragment key={i}>
               <hr /> 
@@ -197,11 +202,19 @@ class Payments extends Component {
                 <input name='invoice_number' type='checkbox' value={invoice.invoice_number} />
                 <span className='checkmark'></span>
               </Label>
+              <p style={{ 
+                textAlign: 'left',
+                margin: '3px 0 0',
+                fontSize: '11px'
+                }}
+              >
+                {invoice.renter}
+              </p>
             </React.Fragment>)
           }
-        })}       
+        }) : null}       
     
-        {store.invoices.length !== 0 && selectedRenter !== '' && selectedContract !== '' 
+        {selectedRenter !== '' && selectedContract !== '' && store.invoices.length !== 0 
         ?
         <React.Fragment>
           <p style={{'marginTop':'50px'}}><b>Данные платежа</b></p>

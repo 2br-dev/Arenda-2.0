@@ -1,6 +1,7 @@
 <?php
 
 include_once '../config/database.php';
+include_once '../classes/peni.php';
 
 class Invoice
 {
@@ -133,5 +134,26 @@ class Invoice
         $db->query($sql_rest_balance);
 
         return $final_sum;
+    }
+
+    function countDaysDifference($id, $contract_id, $renter_id, $payment_date) {
+        $database = new Database();
+        $db = $database->getConnection(); 
+        $Peni = new Peni($db);
+
+        $start_arenda = Q("SELECT `start_arenda` FROM `#_mdd_contracts` WHERE `id` = ?i", array($contract_id))->row('start_arenda');
+        $invoice_month = Q("SELECT `period_month` FROM `#_mdd_invoice` WHERE `id` = ?i", array($id))->row('period_month');
+        $invoice_year = Q("SELECT `period_year` FROM `#_mdd_invoice` WHERE `id` = ?i", array($id))->row('period_year');
+        $payment_array = explode('-', $payment_date);
+
+        if (intval(getMonthString($invoice_month)) == intval($payment_array[1]) && intval($invoice_year) == intval($payment_array[0])) { 
+            # если первый месяц берём из переменной
+            $discount_days = Q("SELECT `discount_days` FROM `#_mdd_contracts` WHERE `id` = ?s", array($contract_id))->row('discount_days');
+        } else { // иначе 5 дней
+            $discount_days = 4;      
+        }
+      
+        $days_difference = $Peni->countDayDifference($start_arenda, $payment_date, $contract_id, $discount_days); 
+        return $days_difference;
     }
 }

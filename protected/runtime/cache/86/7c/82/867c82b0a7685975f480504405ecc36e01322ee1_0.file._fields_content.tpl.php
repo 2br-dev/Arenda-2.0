@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-22 13:21:20
+/* Smarty version 3.1.32, created on 2019-01-28 15:03:24
   from 'C:\OpenServer\domains\arenda.local\protected\app\core\admin-template\view\structure\_fields_content.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c46eea02586f5_91142678',
+  'unifunc' => 'content_5c4eef8c50a8b1_06220160',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/editor.tpl' => 1,
   ),
 ),false)) {
-function content_5c46eea02586f5_91142678 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c4eef8c50a8b1_06220160 (Smarty_Internal_Template $_smarty_tpl) {
 echo '<script'; ?>
  type="text/javascript">var modules_list = <?php echo json_encode($_smarty_tpl->tpl_vars['modules_list']->value);?>
 ;<?php echo '</script'; ?>

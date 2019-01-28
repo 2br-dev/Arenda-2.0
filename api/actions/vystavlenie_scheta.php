@@ -4,10 +4,14 @@ header("Content-Type: application/json; charset=UTF-8");
 
 include_once '../../define.php'; 
 include_once '../config/database.php';
+include_once '../classes/invoice.php';
+include_once '../classes/peni.php';
 
 // подключаемся к БД
 $database = new Database();
-$db = $database->getConnection(); 
+$db       = $database->getConnection(); 
+$Invoice  = new Invoice($db);
+$Peni     = new Peni($db);
 
 // получаем ID последнего номера счёта
 $last_invoice = Q("SELECT MAX(`id`) as `number` FROM `#_mdd_invoice`")->row('number');
@@ -135,9 +139,9 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
       'modified' => $_POST['modified'][$index],
     ));	
 
-    // баланс в таблице баланса
+    # баланс в таблице баланса
     $contract_name = Q("SELECT `number`, `ground`, `balance` FROM `#_mdd_contracts` WHERE `id` = ?i", array($_POST['summa_id'][$index]))->row(); 
-    // записываем данные в таблицу балансов
+    # записываем данные в таблицу балансов
     O('_mdd_balance')->create(array(
       'renter_id' => $renter['id'],
       'contract_id' => $_POST['summa_id'][$index],
@@ -150,13 +154,34 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
       'summa' => $summa,
     ));	
 
-    // плюсуем номер счёта и индекс
+    # плюсуем номер счёта и индекс
     $number_schet++;	
     $index++;
-    // если индекс равен длинна массива, то индекс равен 0
+    # если индекс равен длинна массива, то индекс равен 0
     $index == count($_POST['summa_id']) ? $index = 0 : '';
-    	
-  }					
+      
+    
+    # Проверяем если по этому договору неоплаченные счета
+    $last_id = Q("SELECT MAX(`id`) as `max_id` FROM `#_mdd_invoice`")->row('max_id');
+    $unpayed = Q("SELECT * FROM `#_mdd_invoice` WHERE `id` < ?i AND `contract_id` = ?i", array($last_id, $_POST['summa_id'][$index]))->all();
+
+    // если да, считаем для них пени
+/*     if (count($unpayed) > 0) {
+      foreach($unpayed as $invoice) {
+        $days_diffirence = $Invoice->countDaysDifference($invoice['id'], $_POST['summa_id'][$index], $_POST['renter'][$index], __post('date'));
+        $start_peni_day = Q("SELECT `start_peni` FROM `#_mdd_contracts` WHERE `id` = ?i", array($_POST['summa_id'][$index]))->row('start_peni');
+        
+         if ($days_difference > intval($start_peni_day)) {
+          $Peni->countPeni($days_difference, $start_peni_day, $invoice['id'], --$peni_percent, --$peni_in_contract, 
+          $_POST['summa_id'][$index], $renter_document, $renter_full_name, $invoice_month, $invoice_year);
+        } 
+         echo json_encode(array('$start_peni_day' => $start_peni_day)); 
+      } 
+      
+} */
+    
+  }			
+  
 }
 				
 echo json_encode(array('result' => 1));

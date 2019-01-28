@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-23 14:09:10
+/* Smarty version 3.1.32, created on 2019-01-28 15:03:07
   from 'C:\OpenServer\domains\arenda.local\protected\app\core\admin-template\view\meta\module\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c484b56716971_48709973',
+  'unifunc' => 'content_5c4eef7b182d54_92370266',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/pager.tpl' => 1,
   ),
 ),false)) {
-function content_5c484b56716971_48709973 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c4eef7b182d54_92370266 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\arenda.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.cycle.php','function'=>'smarty_function_cycle',),1=>array('file'=>'C:\\OpenServer\\domains\\arenda.local\\protected\\app\\libs\\smarty.plugins\\modifier.add2query.php','function'=>'smarty_modifier_add2query',),));
 if ((isset($_smarty_tpl->tpl_vars['modules']->value) && !empty($_smarty_tpl->tpl_vars['modules']->value)) || (isset($_smarty_tpl->tpl_vars['groups']->value) && !empty($_smarty_tpl->tpl_vars['groups']->value))) {?><div class="button-container clearfix"><?php if (isset($_smarty_tpl->tpl_vars['groups']->value) && !empty($_smarty_tpl->tpl_vars['groups']->value)) {?><div class="mb40"></div><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['groups']->value, 'item', false, NULL, 'item', array (
