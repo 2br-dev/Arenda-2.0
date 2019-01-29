@@ -59,6 +59,9 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
   $sql_balance = "UPDATE `db_mdd_renters` SET `balance` = '$balance' WHERE `db_mdd_renters`.`id` = '$renter_id'";
   $sql_cont_balance = "UPDATE `db_mdd_contracts` SET `balance` = '$contract_balance' WHERE `db_mdd_contracts`.`id` = '$id'";
 
+  # получаем последний ID в оплатах
+  $payment_id = Q("SELECT MAX(`id`) as `max_id` FROM `#_mdd_payments`")->row('max_id');
+
   // меняем балансы
   $db->query($sql_balance);
   $db->query($sql_cont_balance);
@@ -72,7 +75,7 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
     'contract' => $renter_document,
     'date' => __post('date'),
     'renter' => $renter_full_name,
-    'ground_id' => $id,
+    'ground_id' => implode(",", $invoices),
     'summa' => $summa,
   ));
 

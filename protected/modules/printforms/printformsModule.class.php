@@ -516,6 +516,8 @@ final class printformsModule extends \Fastest\Core\Modules\Module
             $invoice_day = 0;
         }
 
+        $print['period_month'] = getMonth($print['period_month']);
+       
 
         return array(
             'print' => $print,

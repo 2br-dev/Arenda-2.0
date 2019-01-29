@@ -27,7 +27,8 @@ class Balance
 
     function read(){
         $balances = Q("SELECT 
-        `table`.`balance`, `table`.`summa`, `table`.`id`, `table`.`renter`, `table`.`ground`, `table`.`contract`, `table`.`date`,
+        `table`.`balance`, `table`.`summa`, `table`.`id`, `table`.`renter`, 
+        `table`.`ground_id`, `table`.`ground`, `table`.`contract`, `table`.`date`,
         
         `renters`.`short_name`,
         `contracts`.`start_arenda`

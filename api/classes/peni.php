@@ -159,9 +159,9 @@ class Peni
         $payment_day = intval($date[2]);
         
         foreach($invoices as $invoice) {   
-            // все неоплаченные пени
+            /* // все неоплаченные пени
             $allpeni = Q("SELECT * FROM `#_mdd_peni` WHERE `status` = 1 ORDER BY `id` ASC")->all();
-
+ */
             // дата счёта
             $invoice_date = Q("SELECT `invoice_date` FROM `#_mdd_invoice` WHERE `invoice_number` = ?s", array($invoice))->row('invoice_date');
 
@@ -174,7 +174,7 @@ class Peni
 
             // баланс в контракте 
             $contract_balance = intval(Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('balance'));
-          
+         /*  
             // если есть неоплаченные пени, то оплатим сначала их
             if (count($allpeni) > 0) {
                 foreach ($allpeni as $peni) {
@@ -240,7 +240,7 @@ class Peni
                       break;
                     }
                 } // foreach $allpeni
-            } // if
+            } // if */
  
             // получаем месяц и год выставленного счёта
             $invoice_month = Q("SELECT `period_month` FROM `#_mdd_invoice` WHERE `invoice_number` = ?s ORDER BY `id` DESC", array($invoice))->row('period_month');

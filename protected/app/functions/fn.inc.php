@@ -403,3 +403,47 @@ function morph($n, $f1, $f2, $f5)
     return $f5;
 }
 
+function getMonth($month) {
+    $month_string = '';
+
+    switch ($month) {
+        case '01':
+          $month_string = 'Январь';
+          break;
+        case '02':
+          $month_string = 'Февраль';
+          break;
+        case '03':
+          $month_string = 'Март';
+          break;
+        case '04':
+          $month_string = 'Апрель';
+          break;
+        case '05':
+          $month_string = 'Май';
+          break;
+        case '06':
+          $month_string = 'Июнь';
+          break;
+        case '07':
+          $month_string = 'Июль';
+          break;
+        case '08':
+          $month_string = 'Август';
+          break;
+        case '09':
+          $month_string = 'Сентябрь';
+          break;
+        case '10':
+          $month_string = 'Октябрь';
+          break;
+        case '11':
+          $month_string = 'Ноябрь';
+          break;
+        case '12':
+          $month_string = 'Декабрь';
+          break;											
+        }	
+    
+    return $month_string;
+}

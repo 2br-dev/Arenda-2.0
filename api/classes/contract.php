@@ -31,7 +31,7 @@ class Contract
         $reestr = Q("SELECT 
             `contract`.`id` as `contract_id`, `contract`.`number` as `contract_number`, `contract`.`datetime`,
             `contract`.`status`, `contract`.`summa`, `contract`.`start_date`, `contract`.`end_date`, `contract`.`peni`,
-            `contract`.`start_arenda`, `contract`.`status`, 
+            `contract`.`start_arenda`, `contract`.`status`, `contract`.`discoint`, 
             
             `room`.`id` as `room_id`, `room`.`number` as `room_number`, `room`.`floor`, `room`.`square`,
             `room`.`number_scheme`, 
