@@ -5,10 +5,12 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../../define.php';
 include_once '../config/database.php';
 include_once '../classes/peni.php';
+include_once '../classes/invoice.php';
 
 $database = new Database();
 $db = $database->getConnection();
 $Peni = new Peni($db);
+$Invoice = new Invoice($db);
 
 $summa           = __post('summa');
 $date            = __post('date');
@@ -17,7 +19,13 @@ $renter_id       = __post('renter_id');
 $renter_name     = __post('renter_name');
 $renter_document = __post('renter_document');
 $id              = __post('contract_id');
-$invoices        = __post('invoices');
+
+$allinvoices     = $Invoice->read_active($id);
+$invoices        = array();
+
+foreach($allinvoices as $invoice) {
+  array_push($invoices, $invoice['id']);
+}
 
 if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isset($renter_name) 
   && isset($renter_document) && isset($id) && isset($invoices)) {

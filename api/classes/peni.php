@@ -55,8 +55,8 @@ class Peni
         $start_arenda = explode('.', $start_arenda); // [day, month, year] -> numbers
         
         // год и месяц по счёту
-        $invoice_year = Q("SELECT `period_year` FROM `#_mdd_invoice` WHERE `invoice_number` = ?s", array($invoice))->row('period_year'); // 2019
-        $invoice_month = Q("SELECT `period_month` FROM `#_mdd_invoice` WHERE `invoice_number` = ?s", array($invoice))->row('period_month'); // январь
+        $invoice_year = Q("SELECT `period_year` FROM `#_mdd_invoice` WHERE `id` = ?s", array($invoice))->row('period_year'); // 2019
+        $invoice_month = Q("SELECT `period_month` FROM `#_mdd_invoice` WHERE `id` = ?s", array($invoice))->row('period_month'); // январь
 
         // если год оплаты совпадает с годом счёта и месяц оплаты совпадает с месяцем в счёта то пени не считаем
         if ($start_arenda[2] == $invoice_year && intval($start_arenda[1]) == intval($invoice_month)) 
@@ -95,14 +95,14 @@ class Peni
     $id, $renter_document, $renter_full_name, $invoice_month, $invoice_year) {
         $peni_delay = $days_difference - intval($start_peni_day);
         // берём сумму и коэффициент по текущему счёту
-        $cur_summa = Q("SELECT `rest`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i ORDER BY `id` DESC", array($invoice))->row('rest');
-        $cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `invoice_number` = ?i ORDER BY `id` DESC", array($invoice))->row('amount');
+        $cur_summa = Q("SELECT `rest`    FROM `#_mdd_invoice` WHERE `id` = ?i ORDER BY `id` DESC", array($invoice))->row('rest');
+        $cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `id` = ?i ORDER BY `id` DESC", array($invoice))->row('amount');
 
         // за этот месяц будет начислять пени и мы можем подсчитать
         $peni = number_format(($peni_delay * $cur_summa * $peni_percent), 2, '.', '');
         $peni_amount = $peni_delay * $peni_in_contract;
 
-        $invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = '$invoice' AND `status` != 0", array())->row();
+        $invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `id` = '$invoice' AND `status` != 0", array())->row();
     
         floatval($peni) == 0 ? $status = 0 : $status = 1;
         
@@ -163,7 +163,7 @@ class Peni
             $allpeni = Q("SELECT * FROM `#_mdd_peni` WHERE `status` = 1 ORDER BY `id` ASC")->all();
  */
             // дата счёта
-            $invoice_date = Q("SELECT `invoice_date` FROM `#_mdd_invoice` WHERE `invoice_number` = ?s", array($invoice))->row('invoice_date');
+            $invoice_date = Q("SELECT `invoice_date` FROM `#_mdd_invoice` WHERE `id` = ?s", array($invoice))->row('invoice_date');
 
             // дата начала аренды по договору
             $start_arenda = Q("SELECT `start_arenda` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_arenda');
@@ -243,8 +243,8 @@ class Peni
             } // if */
  
             // получаем месяц и год выставленного счёта
-            $invoice_month = Q("SELECT `period_month` FROM `#_mdd_invoice` WHERE `invoice_number` = ?s ORDER BY `id` DESC", array($invoice))->row('period_month');
-            $invoice_year = Q("SELECT `period_year` FROM `#_mdd_invoice` WHERE `invoice_number` = ?s ORDER BY `id` DESC", array($invoice))->row('period_year');
+            $invoice_month = Q("SELECT `period_month` FROM `#_mdd_invoice` WHERE `id` = ?s ORDER BY `id` DESC", array($invoice))->row('period_month');
+            $invoice_year = Q("SELECT `period_year` FROM `#_mdd_invoice` WHERE `id` = ?s ORDER BY `id` DESC", array($invoice))->row('period_year');
         
             // получаем день начисления пени и саму пени
             $start_peni_day = Q("SELECT `start_peni` FROM `#_mdd_contracts` WHERE `id` = ?i", array($id))->row('start_peni');
@@ -293,14 +293,14 @@ class Peni
                 
                 $peni_delay = $days_difference - intval($start_peni_day);
                 // берём сумму и коэффициент по текущему счёту
-                $cur_summa = Q("SELECT `rest`    FROM `#_mdd_invoice` WHERE `invoice_number` = ?i ORDER BY `id` DESC", array($invoice))->row('rest');
-                $cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `invoice_number` = ?i ORDER BY `id` DESC", array($invoice))->row('amount');
+                $cur_summa = Q("SELECT `rest`    FROM `#_mdd_invoice` WHERE `id` = ?i ORDER BY `id` DESC", array($invoice))->row('rest');
+                $cur_amount = Q("SELECT `amount`	FROM `#_mdd_invoice` WHERE `id` = ?i ORDER BY `id` DESC", array($invoice))->row('amount');
 
                 // за этот месяц будет начислять пени и мы можем подсчитать
                 $peni = number_format(($peni_delay * $cur_summa * $peni_percent), 2, '.', '');
                 $peni_amount = $peni_delay * $peni_in_contract;
    
-                $invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `invoice_number` = '$invoice' AND `status` != 0", array())->row();
+                $invoice_number = Q("SELECT * FROM `#_mdd_invoice` WHERE `id` = '$invoice' AND `status` != 0", array())->row();
             
                 floatval($peni) == 0 ? $status = 0 : $status = 1;
                 
@@ -351,11 +351,15 @@ class Peni
             } */
               
 
-            $invoice_rest = Q("SELECT `rest` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i ORDER BY `id` DESC", array($invoice))->row('rest');
+            if ($summa < 0) {
+                die();
+            }
+            
+            $invoice_rest = Q("SELECT `rest` FROM `#_mdd_invoice` WHERE `id` = ?i ORDER BY `id` DESC", array($invoice))->row('rest');
             // если сумма больше остатка по счету, то...
             if ($summa >= $invoice_rest) {
                 // записываем в остаток 0, и меняем статус
-                $sql = "UPDATE `db_mdd_invoice` SET `rest` = 0, `status` = 0 WHERE `db_mdd_invoice`.`invoice_number` = $invoice";
+                $sql = "UPDATE `db_mdd_invoice` SET `rest` = 0, `status` = 0 WHERE `db_mdd_invoice`.`id` = $invoice";
                 $db->query($sql);
         
                 // пересчитываем остаточную сумму
@@ -364,7 +368,7 @@ class Peni
             } else {
                 // высчитываем остаток и перезаписываем
                 $rest = $invoice_rest - $summa;
-                $sql = "UPDATE `db_mdd_invoice` SET `rest` = '$rest' WHERE `db_mdd_invoice`.`invoice_number` = '$invoice'";
+                $sql = "UPDATE `db_mdd_invoice` SET `rest` = '$rest' WHERE `db_mdd_invoice`.`id` = '$invoice'";
         
                 $db->query($sql);
             }        

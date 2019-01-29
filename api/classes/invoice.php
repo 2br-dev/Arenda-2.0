@@ -86,6 +86,14 @@ class Invoice
         return $invoices;
     }  
 
+    function read_active($id) {
+        $invoices = Q("SELECT `id` FROM `#_mdd_invoice` 
+            WHERE `contract_id` = ?s AND `rest` != ?i
+            ORDER BY `id` ASC", array($id, 0))->all();
+
+        return $invoices;
+    }
+
     function read_by_renter_fullname($fullname) {   
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `renter` = ?s 

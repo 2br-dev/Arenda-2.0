@@ -20,10 +20,11 @@ const CustomTableCell = withStyles(theme => ({
 
 const styles = theme => ({
   root: {
-    width: '500px',
+    width: '70%',
     marginTop: '50px',
     overflowX: 'auto',
-    margin: '0 auto'
+    margin: '0 auto',
+    maxWidth: '1000px'
   },
   table: {
     minWidth: 500,

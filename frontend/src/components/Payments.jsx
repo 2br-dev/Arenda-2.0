@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Loader from './Loader'
 import Modal from './Modal'
 import $ from 'jquery'
-import Functions from '../functions/Functions'
+import Typography from '@material-ui/core/Typography'
 
 class Payments extends Component {
   constructor(props){
@@ -35,14 +35,14 @@ class Payments extends Component {
       .catch(err => console.log(err)) 
   }
 
-  fetchInvoices = () => {
+  fetchContracts = () => {
     const self = this;
     $.ajax({
       type: "POST",
-      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/invoice/read_by_contract.php`,
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read_one.php`,
       data: { id: self.state.selectedContract },
       success: function(res){
-        self.props.getInvoices(res);
+        self.props.getContracts(res);
       }
     });
   }
@@ -54,15 +54,8 @@ class Payments extends Component {
     const { summa, date, number, selectedRenter, selectedContract } = this.state;
     const store = this.props.testStore;
 
-    // добавляем в массив все счета
-    let invoices = [];
-    $("input[name='invoice_number']:checked").each(function() {
-      invoices.push($(this).val());
-    });
-    invoices.sort(this.sortNumber); // сортируем
- 
     // если все поля есть - то делаем запрос
-    if (summa && date && number && selectedRenter && selectedContract && invoices.length !== 0) {
+    if (summa && date && number && selectedRenter && selectedContract ) {
       const data = {
         summa:              parseFloat(summa.replace(/,/g,'.')).toFixed(2), // требуемый формат
         date:               date,
@@ -70,8 +63,7 @@ class Payments extends Component {
         renter_id:          selectedRenter,
         renter_name:        store.renters.find(renter => renter.id === selectedRenter).full_name, // находим имя арендатора
         renter_document:    store.contracts.find(contract => contract.id === selectedContract).number, // находим номер договора
-        contract_id:        selectedContract,
-        invoices:           invoices,
+        contract_id:        selectedContract
       };
       
       console.log(data);
@@ -84,8 +76,8 @@ class Payments extends Component {
           console.log(res);
           self.openModal('Успешно!');
           self.fetchData();
-          self.fetchInvoices();
-          $('#payments').trigger("reset"); // при успехе ресет формы
+          self.fetchContracts();
+         /*  $('#payments').trigger("reset"); // при успехе ресет формы */
         },
         error: function(err) {
           console.log(err);
@@ -166,7 +158,6 @@ class Payments extends Component {
   render() {
     const { date, loading, selectedRenter, selectedContract } = this.state;
     const store = this.props.testStore;
-    const F = new Functions();
 
     return (
       <section className='container' style={{'width':'600px'}}>
@@ -196,36 +187,28 @@ class Payments extends Component {
             )
           })}
         </Select>
-        :null}
-
-        {selectedRenter !== '' && selectedContract !== '' ? store.invoices.map((invoice, i) => {  
-          if (invoice.rest > 0) {
-            return (<React.Fragment key={i}>
-              <hr /> 
-              <Label    
-                className='container-checkbox' 
-                style={{'marginBottom':'0'}}
-              >
-              Номер счёта {invoice.invoice_number} от <b>{F.getStringOfMonth(invoice.period_month)}, {invoice.period_year}</b>, остаток по счёту: <b> {invoice.rest}</b>
-                <input name='invoice_number' type='checkbox' value={invoice.invoice_number} />
-                <span className='checkmark'></span>
-              </Label>
-              <p style={{ 
-                textAlign: 'left',
-                margin: '3px 0 0',
-                fontSize: '11px'
-                }}
-              >
-                {invoice.renter}
-              </p>
-            </React.Fragment>)
-          }
-        }) : null}       
+        :null}  
     
-        {selectedRenter !== '' && selectedContract !== '' && store.invoices.length !== 0 
+        {selectedRenter !== '' && selectedContract !== '' && store.invoices.length != 0
         ?
         <React.Fragment>
-          <p style={{'marginTop':'50px'}}><b>Данные платежа</b></p>
+
+          <Typography variant="subtitle2" style={{ textAlign: 'left' }}>Общий баланс по договору:  
+            <span className='ml5' 
+             style={store.contracts.find(contract => contract.id == selectedContract).balance < 0 ? {color:'red'} : {color:'green'} }
+            >
+              {Number(store.contracts.find(contract => contract.id == selectedContract).balance).toFixed(2)} ₽
+            </span>
+          </Typography>
+          <Typography variant="subtitle2" style={{ textAlign: 'left' }}>Общий баланс арендатора:  
+            <span className='ml5'
+              style={store.renters.find(renter => renter.id == selectedRenter).balance < 0 ? {color:'red'} : {color:'green'} }
+            >
+              {Number(store.renters.find(renter => renter.id == selectedRenter).balance).toFixed(2)} ₽
+            </span>
+          </Typography>
+
+          <p><b>Данные платежа</b></p>
 
           <FormRow>
             <label htmlFor='sum'>Сумма платежа:</label>
@@ -291,16 +274,6 @@ const FormRow = styled.div`
   input {
     width: 70%;
     background: #fff;
-  }
-  margin-bottom: 10px;
-`;
-
-const Label = styled.label`
-  display: flex;
-  align-items: center;
-  b {
-    font-size: 1em;
-    margin-left: 5px;
   }
   margin-bottom: 10px;
 `;
