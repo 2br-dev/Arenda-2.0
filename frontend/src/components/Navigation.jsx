@@ -23,6 +23,9 @@ export default class Navigation extends Component {
           <ul>
             {window.location.pathname !== '/account' ? (<React.Fragment>
               <li>
+                <Link to='/data' onClick={() => this.props.handleChangeUrl('data')}>Данные</Link>
+              </li>
+              <li>
                 <Link to='/reestr' onClick={() => this.props.handleChangeUrl('reestr')}>Реестр арендаторов</Link>
               </li>
               <li>

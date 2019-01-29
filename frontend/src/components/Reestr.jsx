@@ -20,6 +20,11 @@ class Reestr extends Component {
     var self = this;
     this.setState({loading: true})
 
+    await fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/checkstatus.php`)
+      .then(response => response.json())
+      .then(renters => console.log(renters)) 
+      .catch(err => console.log(err)) 
+
     // получаем арендаторов
     await $.ajax({ 
       url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`,
@@ -154,7 +159,7 @@ class Reestr extends Component {
                       {contract.status === '0' 
                         ? <span style={{'color':'red'}}>Завершенный</span> 
                         : contract.status === '0.5'
-                        ? <span style={{'color':'yellow'}}>Действителен до: {contract.end_date}</span>
+                        ? <span style={{'color':'orange'}}>Действителен до: {contract.end_date}</span>
                         : <span style={{'color':'green'}}>Действующий</span>
                       }
                     </RenterContractDetails>

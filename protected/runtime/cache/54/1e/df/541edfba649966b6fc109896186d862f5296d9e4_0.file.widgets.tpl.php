@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-28 15:03:04
+/* Smarty version 3.1.32, created on 2019-01-29 14:08:03
   from 'C:\OpenServer\domains\arenda.local\protected\app\core\admin-template\view\dashboard\widgets.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c4eef78d31a52_73687551',
+  'unifunc' => 'content_5c5034139447e4_05301719',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,6 +20,6 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c4eef78d31a52_73687551 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c5034139447e4_05301719 (Smarty_Internal_Template $_smarty_tpl) {
 }
 }

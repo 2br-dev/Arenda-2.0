@@ -5,6 +5,7 @@ import Bills from './Bills'
 import Print from './Print'
 import Payments from './Payments'
 import CustomizedTable from './History'
+import RentersData from './RentersData'
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -33,6 +34,8 @@ export default class MainPage extends Component {
         return <Payments /> 
       case 'history':
         return <CustomizedTable /> 
+      case 'data':
+        return <RentersData /> 
       default: 
         console.log('default');  
     }     

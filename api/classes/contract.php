@@ -72,5 +72,11 @@ class Contract
         
         return $contracts; 
     }
+
+    function read_active() {
+        $contracts = Q("SELECT `end_date`, `id` FROM `#_mdd_contracts`")->all();
+        
+        return $contracts; 
+    }
   
 }
