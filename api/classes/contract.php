@@ -42,7 +42,7 @@ class Contract
             
             FROM `#_mdd_contracts` as `contract`					
             LEFT JOIN `#_mdd_rooms` as `room` ON `contract`.`rooms` = `room`.`id`
-            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id` WHERE `status` = ?i", array($status))->all();
+            LEFT JOIN `#_mdd_renters` as `renter` ON `contract`.`renter` = `renter`.`id` WHERE `status` = ?i OR `status` = '0.5'", array($status))->all();
 
         return $reestr;    
     }
