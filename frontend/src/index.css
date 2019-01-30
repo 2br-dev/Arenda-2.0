@@ -256,6 +256,9 @@ hr {
 .ml5 {
   margin-left: 5px;
 }
+.MuiSelect-icon-85, .MuiInputBase-root-99, .jss85, .jss99 {
+  color: white !important;
+}
 @media all and (max-width:30em){
   .btn {
     display: block;
