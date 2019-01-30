@@ -12,7 +12,7 @@ $db = $database->getConnection();
 $Peni = new Peni($db);
 $Invoice = new Invoice($db);
 
-$summa           = __post('summa');
+$summa           = floatval(__post('summa'));
 $date            = __post('date');
 $number          = __post('number');
 $renter_id       = __post('renter_id');
@@ -62,6 +62,8 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
   // прибавляем им сумму
   $balance += $summa;
   $contract_balance += $summa;
+  $contract_balance = str_replace(",",".", $contract_balance);
+  $balance = str_replace(",",".", $balance);
 
   // запросы на изменение баланса
   $sql_balance = "UPDATE `db_mdd_renters` SET `balance` = '$balance' WHERE `db_mdd_renters`.`id` = '$renter_id'";

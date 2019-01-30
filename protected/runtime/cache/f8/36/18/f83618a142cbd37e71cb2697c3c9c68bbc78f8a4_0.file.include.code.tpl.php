@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-29 14:22:33
+/* Smarty version 3.1.32, created on 2019-01-30 16:30:46
   from 'C:\OpenServer\domains\arenda.local\protected\app\core\admin-template\system\include.code.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c503779c073d5_73236483',
+  'unifunc' => 'content_5c51a70607ab86_69047874',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c503779c073d5_73236483 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c51a70607ab86_69047874 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div id="clipsmodal" style="display: none;">
     <section>
         <ul class="redactor_clips_box">

@@ -177,7 +177,7 @@ class Peni
             $modified = Q("SELECT `modified` FROm `#_mdd_invoice` WHERE `id` = ?s", array($invoice))->row('modified');
 
             // баланс в контракте 
-            $contract_balance = intval(Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('balance'));
+            $contract_balance = floatval(Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('balance'));
          /*  
             // если есть неоплаченные пени, то оплатим сначала их
             if (count($allpeni) > 0) {

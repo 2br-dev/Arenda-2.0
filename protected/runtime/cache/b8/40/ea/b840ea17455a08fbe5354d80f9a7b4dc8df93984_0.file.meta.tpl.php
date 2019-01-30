@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-30 12:13:10
+/* Smarty version 3.1.32, created on 2019-01-30 16:39:46
   from 'C:\OpenServer\domains\arenda.local\protected\themes\base\smarty\components\meta.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c516aa6e4b551_40161464',
+  'unifunc' => 'content_5c51a922bf78f7_69050069',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b840ea17455a08fbe5354d80f9a7b4dc8df93984' => 
     array (
       0 => 'C:\\OpenServer\\domains\\arenda.local\\protected\\themes\\base\\smarty\\components\\meta.tpl',
-      1 => 1548832363,
+      1 => 1548846694,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c516aa6e4b551_40161464 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c51a922bf78f7_69050069 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html class="no-js" itemscope="itemscope" itemtype="http://schema.org/<?php if (!isset($_smarty_tpl->tpl_vars['uri']->value[1])) {?>WebPage<?php } else { ?>ItemPage<?php }?>" lang="<?php echo $_smarty_tpl->tpl_vars['_page']->value['lang'];?>
 "><head><title itemprop="name"><?php echo $_smarty_tpl->tpl_vars['_meta']->value['title'];?>

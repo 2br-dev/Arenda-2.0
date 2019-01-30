@@ -104,16 +104,16 @@ class Invoice
     
     function payWithDiscount($invoice, $renter_id, $id, $summa, $db, $first){
         // берём скидку и сумму по текущему счёту
-        $discount       =   Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('discount');
-        $contract_summa =   Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('summa');
-        $invoice_summa  =   Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('summa');
+        $discount       =   floatval(Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('discount'));
+        $contract_summa =   floatval(Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('summa'));
+        $invoice_summa  =   floatval(Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('summa'));
 
         if ($first == 1) {
-            $final_sum      =   intval($invoice_summa * ($discount / $contract_summa));        
-            $difference     =   $invoice_summa - $final_sum;
+            $final_sum      =   floatval($invoice_summa * ($discount / $contract_summa));        
+            $difference     =   floatval($invoice_summa) - floatval($final_sum);
         } else {
             $final_sum      =   $discount;
-            $difference     =   $contract_summa - $final_sum;
+            $difference     =   floatval($contract_summa) - floatval($final_sum);
         }
 
         // так же нам нужно обновить все остальные балансы по этому договору
@@ -126,7 +126,7 @@ class Invoice
             WHERE `id` >= '$balance_id'
             AND `contract_id` = '$id'";
 
-        $db->query($update_rest_balance);    
+        $db->query($update_rest_balance);  
 
         $upd_summa          =   "UPDATE `db_mdd_invoice`    SET `summa`     = '$final_sum'   WHERE `id` = '$invoice'";
         $upd_rest           =   "UPDATE `db_mdd_invoice`    SET `rest`      = '$final_sum'   WHERE `id` = '$invoice'";
