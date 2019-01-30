@@ -40,7 +40,7 @@ class Payments extends Component {
     $.ajax({
       type: "POST",
       url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/contract/read_one.php`,
-      data: { id: self.state.selectedContract },
+      data: { id: self.state.selectedRenter },
       success: function(res){
         self.props.getContracts(res);
       }
@@ -76,7 +76,7 @@ class Payments extends Component {
           console.log(res);
           self.openModal('Успешно!');
           self.fetchData();
-          self.fetchContracts();
+          self.fetchContracts(); 
          /*  $('#payments').trigger("reset"); // при успехе ресет формы */
         },
         error: function(err) {
@@ -197,14 +197,14 @@ class Payments extends Component {
             <span className='ml5' 
              style={store.contracts.find(contract => contract.id == selectedContract).balance < 0 ? {color:'red'} : {color:'green'} }
             >
-              {Number(store.contracts.find(contract => contract.id == selectedContract).balance).toFixed(2)} ₽
+              {parseFloat(store.contracts.find(contract => contract.id == selectedContract).balance).toFixed(2)} ₽
             </span>
           </Typography>
           <Typography variant="subtitle2" style={{ textAlign: 'left' }}>Общий баланс арендатора:  
             <span className='ml5'
               style={store.renters.find(renter => renter.id == selectedRenter).balance < 0 ? {color:'red'} : {color:'green'} }
             >
-              {Number(store.renters.find(renter => renter.id == selectedRenter).balance).toFixed(2)} ₽
+              {parseFloat(store.renters.find(renter => renter.id == selectedRenter).balance).toFixed(2)} ₽
             </span>
           </Typography>
 

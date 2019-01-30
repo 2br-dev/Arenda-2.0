@@ -159,9 +159,11 @@ class Peni
         $payment_day = intval($date[2]);
         
         foreach($invoices as $invoice) {   
-            /* // все неоплаченные пени
-            $allpeni = Q("SELECT * FROM `#_mdd_peni` WHERE `status` = 1 ORDER BY `id` ASC")->all();
- */
+
+            if ($summa <= 0) {
+                break;
+            }
+
             // дата счёта
             $invoice_date = Q("SELECT `invoice_date` FROM `#_mdd_invoice` WHERE `id` = ?s", array($invoice))->row('invoice_date');
 
@@ -171,6 +173,8 @@ class Peni
             $start_arenda_dates = explode('.', $start_arenda);
             $start_arenda_month = intval($start_arenda_dates[1]);
             $start_arenda_year = intval($start_arenda_dates[2]);
+
+            $modified = Q("SELECT `modified` FROm `#_mdd_invoice` WHERE `id` = ?s", array($invoice))->row('modified');
 
             // баланс в контракте 
             $contract_balance = intval(Q("SELECT `balance` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('balance'));
@@ -260,33 +264,22 @@ class Peni
             // находим разницу в днях, когда был оплачен счёт
             $days_difference = $this->countDayDifference($start_arenda, $payment_date, $invoice, $discount_days);  
 
-/*          echo '---payment_date is---'.$payment_date; 
-            echo '---discount days is---'.$discount_days;
-            echo '---start_arenda_month is---'.$start_arenda_month; 
-            echo '---payment_month is---'.$payment_month; 
-            echo '---start_arenda_year is---'.$start_arenda_year; 
-            echo '---payment_year is---'.$payment_year;                  
-            echo '---$days_difference is---'.$days_difference;  */
-
             //проверяем дату когда был оплачен счёт на предмет соответсвия скидке
             if (
                 intval($days_difference)  <=  intval($discount_days) && 
                 intval($invoice_month)    >=  intval($payment_month) && 
                 intval($invoice_year)     >=  intval($payment_year) && 
-                intval($summa)            !=  0
+                intval($summa)            !=  0 &&
+                intval($modified)         ==  0
             ) {            
-                // и оплачиваем
-                /* echo '---skidka is true---';  */
 
                 $Invoice = new Invoice($db);
-                $summa = $Invoice->payWithDiscount($invoice, $renter_id, $id, $summa, $db); // оплачиваем со скидкой
+
+                $start_arenda_month == $invoice_month ? $first = 1 : $first = 0;
+
+                $Invoice->payWithDiscount($invoice, $renter_id, $id, $summa, $db, $first); // оплачиваем со скидкой
             }
            
-            
-            # echo '---$days_difference is---'.$days_difference;  
-            # echo '---start_peni_day is---'.$start_peni_day;  
-            # echo '---invoice_month is---'.$invoice_month;            
-            # echo '---payment_month days is---'.$payment_month; 
 
             // проверяем дату оплаты на предмет начиления пени
             /* if ($days_difference > intval($start_peni_day) && intval($start_arenda_month) != intval($invoice_month)) {
@@ -349,21 +342,15 @@ class Peni
                     'summa' => $peni,
                 ));
             } */
-              
 
-            if ($summa < 0) {
-                die();
-            }
-            
             $invoice_rest = Q("SELECT `rest` FROM `#_mdd_invoice` WHERE `id` = ?i ORDER BY `id` DESC", array($invoice))->row('rest');
+
             // если сумма больше остатка по счету, то...
             if ($summa >= $invoice_rest) {
                 // записываем в остаток 0, и меняем статус
                 $sql = "UPDATE `db_mdd_invoice` SET `rest` = 0, `status` = 0 WHERE `db_mdd_invoice`.`id` = $invoice";
                 $db->query($sql);
-        
-                // пересчитываем остаточную сумму
-                $summa -= $invoice_rest;
+    
                 //если сумма меньше остатка по счету
             } else {
                 // высчитываем остаток и перезаписываем
@@ -372,9 +359,12 @@ class Peni
         
                 $db->query($sql);
             }        
+
+            // пересчитываем остаточную сумму
+            $summa -= $invoice_rest;
+
         } // foreach $invoices   
         
-
         return $summa;
     } 
 }

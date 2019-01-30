@@ -102,14 +102,14 @@ class Invoice
         return $invoices;
     }  
     
-    function payWithDiscount($invoice, $renter_id, $id, $summa, $db){
+    function payWithDiscount($invoice, $renter_id, $id, $summa, $db, $first){
         // берём скидку и сумму по текущему счёту
-        $discount           =   Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i", array($invoice))->row('discount');
+        $discount       =   Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('discount');
         $contract_summa =   Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('summa');
-        $invoice_summa  =   Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `invoice_number` = ?i", array($invoice))->row('summa');
+        $invoice_summa  =   Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('summa');
 
-        if (intval($summa) < intval($discount) ) {
-            $final_sum      =   intval($summa * ($discount / $contract_summa));        
+        if ($first == 1) {
+            $final_sum      =   intval($invoice_summa * ($discount / $contract_summa));        
             $difference     =   $invoice_summa - $final_sum;
         } else {
             $final_sum      =   $discount;
@@ -117,19 +117,22 @@ class Invoice
         }
 
         // так же нам нужно обновить все остальные балансы по этому договору
-        $balance_id = Q("SELECT `id` FROM `#_mdd_balance` WHERE `ground_id` = ?s", array($invoice))->row('id');
+        $ground = Q("SELECT `invoice_number` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('invoice_number');
+
+        $balance_id = Q("SELECT `id` FROM `#_mdd_balance` WHERE `ground_id` = ?s", array($ground))->row('id');
+
         $update_rest_balance = "UPDATE `db_mdd_balance` 
-            SET `balance` = (`balance` + $difference) 
-            WHERE `id` > '$balance_id'
+            SET `balance` = (`balance` + '$difference') 
+            WHERE `id` >= '$balance_id'
             AND `contract_id` = '$id'";
 
         $db->query($update_rest_balance);    
 
-        $upd_summa          =   "UPDATE `db_mdd_invoice`    SET `summa`     = '$final_sum'               WHERE `invoice_number` = '$invoice'";
-        $upd_rest           =   "UPDATE `db_mdd_invoice`    SET `rest`      = '$final_sum'                WHERE `invoice_number` = '$invoice'";
+        $upd_summa          =   "UPDATE `db_mdd_invoice`    SET `summa`     = '$final_sum'   WHERE `id` = '$invoice'";
+        $upd_rest           =   "UPDATE `db_mdd_invoice`    SET `rest`      = '$final_sum'   WHERE `id` = '$invoice'";
 
-        $sql_all_balance    =   "UPDATE `db_mdd_balance`    SET `summa`     = '$final_sum'               WHERE `ground_id` = '$invoice'"; 
-        $sql_rest_balance   =   "UPDATE `db_mdd_balance`    SET `balance`   = (`balance` + '$difference')  WHERE `ground_id` = '$invoice'";  
+        $sql_all_balance    =   "UPDATE `db_mdd_balance`    SET `summa`     = '$final_sum'   WHERE `ground_id` = '$ground'"; 
+        $sql_rest_balance   =   "UPDATE `db_mdd_balance`    SET `balance`   = (`balance` + '$difference')  WHERE `ground_id` = '$ground'"; 
 
         $sql_balance        =   "UPDATE `db_mdd_renters`    SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_renters`.`id` = '$renter_id'";
         $sql_cont_balance   =   "UPDATE `db_mdd_contracts`  SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_contracts`.`id` = '$id'";
@@ -139,9 +142,9 @@ class Invoice
         $db->query($sql_balance);
         $db->query($sql_cont_balance); 
         $db->query($sql_all_balance);
-        $db->query($sql_rest_balance);
+        /* $db->query($sql_rest_balance); */
 
-        return $final_sum;
+        return $summa - $final_sum;
     }
 
     function countDaysDifference($id, $contract_id, $renter_id, $payment_date) {

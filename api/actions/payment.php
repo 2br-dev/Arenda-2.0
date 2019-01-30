@@ -42,7 +42,7 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
   $renter_full_name = Q("SELECT `full_name` FROM `#_mdd_renters` WHERE `id` = ?i", array($renter_id))->row('full_name');
 
   // работаем с пени
- $Peni->pay(__post('date'), $date, $invoices, $renter_document, $summa, $renter_id, $id, $renter_full_name, $db, $peni_percent);
+  $Peni->pay(__post('date'), $date, $invoices, $renter_document, $summa, $renter_id, $id, $renter_full_name, $db, $peni_percent);
 
   
   // записываем оплату
