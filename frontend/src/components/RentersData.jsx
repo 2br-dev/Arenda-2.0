@@ -42,7 +42,7 @@ const styles = theme => ({
 
 class RentersData extends React.Component {
   state = { renters: [] }
-   
+
   componentDidMount = () => {
     this.fetchBalances();
   }
@@ -50,10 +50,10 @@ class RentersData extends React.Component {
   fetchBalances = () => {
     fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`)
       .then(response => response.json())
-      .then(renters => this.setState({ renters })) 
-      .catch(err => console.log(err)) 
+      .then(renters => this.setState({ renters }))
+      .catch(err => console.log(err))
   }
-  
+
   render() {
     const { classes } = this.props;
     const { renters } = this.state;
@@ -62,22 +62,27 @@ class RentersData extends React.Component {
     return (
       <Paper className={classes.root}>
         <Table className={classes.table}>
-          <TableHead>
             <TableRow>
               <CustomTableCell>Арендатор</CustomTableCell>
               <CustomTableCell align="right">Логин</CustomTableCell>
               <CustomTableCell align="right">Пароль</CustomTableCell>
             </TableRow>
-          </TableHead>
           <TableBody>
             {renters.map(renter => (
-              <TableRow className={ classes.row } key={ renter.id }>
-                <CustomTableCell component="th" scope="row" className={ classes.bold }>
-                  { renter.short_name }
+              <React.Fragment>
+              <TableRow className={classes.row} key={renter.id}>
+                <CustomTableCell component="th" scope="row" className={classes.bold}>
+                  {renter.short_name}
                 </CustomTableCell>
-                <CustomTableCell align="right">{ renter.login }</CustomTableCell>
-                <CustomTableCell align="right">{ renter.password }</CustomTableCell>
+                <CustomTableCell align="right">{renter.login}</CustomTableCell>
+                <CustomTableCell align="right">{renter.password}</CustomTableCell>
               </TableRow>
+              <TableRow>
+                <CustomTableCell>Арендатор</CustomTableCell>
+                <CustomTableCell align="right">Логин</CustomTableCell>
+                <CustomTableCell align="right">Пароль</CustomTableCell>
+              </TableRow>
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>

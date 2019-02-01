@@ -95,9 +95,12 @@ class Invoice
     }
 
     function read_by_renter_fullname($fullname) {   
-        $invoices = Q("SELECT * FROM `#_mdd_invoice` 
-            WHERE `renter` = ?s 
-            ORDER BY `id` DESC", array($fullname))->all();
+        $invoices = Q("SELECT * FROM `#_mdd_invoice` AS `i`
+            
+            LEFT JOIN `#_mdd_contracts` AS `c` ON `i`.`contract_id` = `c`.`id`
+            
+            WHERE `i`.`renter` = ?s 
+            ORDER BY `i`.`id` DESC", array($fullname))->all();
   
         return $invoices;
     }  

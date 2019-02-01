@@ -77,7 +77,7 @@ class Payments extends Component {
           self.openModal('Успешно!');
           self.fetchData();
           self.fetchContracts(); 
-         /*  $('#payments').trigger("reset"); // при успехе ресет формы */
+          $('#payments').trigger("reset"); // при успехе ресет формы 
         },
         error: function(err) {
           console.log(err);

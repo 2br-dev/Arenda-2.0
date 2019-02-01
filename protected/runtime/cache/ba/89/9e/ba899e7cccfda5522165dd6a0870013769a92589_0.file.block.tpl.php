@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-28 18:18:10
+/* Smarty version 3.1.32, created on 2019-02-01 12:57:03
   from 'C:\OpenServer\domains\arenda.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c4f1d32b4ff56_25397614',
+  'unifunc' => 'content_5c5417ef077b18_24496714',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c4f1d32b4ff56_25397614 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c5417ef077b18_24496714 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\arenda.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><link type="text/css" rel="stylesheet" href="/css/printform.css" />
 
