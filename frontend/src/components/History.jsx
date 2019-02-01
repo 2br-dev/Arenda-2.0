@@ -28,7 +28,7 @@ const CustomTableCell = withStyles(theme => ({
 
 const styles = theme => ({
   root: {
-    width: '70%',
+    width: '90%',
     marginTop: '50px',
     overflowX: 'auto',
     margin: '0 auto'
@@ -60,7 +60,10 @@ const styles = theme => ({
   },
   success: { color: 'green' },
   warning: { color: 'red' },
-  bold: { fontWeight: 'bold' }
+  bold: { fontWeight: 'bold' },
+  payment: {
+    background: '#e8f5e9'
+  }
 });
 
 
@@ -223,7 +226,7 @@ class CustomizedTable extends React.Component {
           </TableHead>
           <TableBody>
             {balances.map(balance => (
-              <TableRow className={ classes.row } key={ balance.id }>
+              <TableRow className={ balance.ground === 'оплата' ? classes.payment : classes.row } key={ balance.id }>
                 <CustomTableCell component="th" scope="row" className={ classes.bold }>
                   { balance.short_name }
                 </CustomTableCell>

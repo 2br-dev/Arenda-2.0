@@ -133,21 +133,21 @@ class Account extends Component {
             <div style={{ 'marginTop': '40px ' }}>
               <Row>
                 <b>№ Договора</b>
-                <b>На сумму</b>
+                <b>За период</b>
               </Row>
               <hr />
               {store.contracts.map((contract, i) => {
                 return (
                   <Row key={i}>
-                    <span><b>{contract.number} </b> за период: {contract.start_date} - {contract.end_date}</span>
-                    <span>{contract.summa}</span>
+                    <span><b>{contract.number} </b></span>
+                    <span>{contract.start_date} - {contract.end_date}</span>
                   </Row>
                 )
               })}
             </div>
 
             <div style={{ 'marginTop': '40px ' }}>
-              <Row>
+              {/* <Row>
                 <b>Акт сверки</b>
                 <DateRangePicker
                   onChange={this.onChange}
@@ -162,7 +162,7 @@ class Account extends Component {
                   })}
                 </Select>
               </Row>
-              <hr />
+              <hr /> */}
 
               {/*           {contract !== '' ? (<React.Fragment>
                 <Row><b>Акт сверки</b>

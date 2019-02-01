@@ -4,6 +4,7 @@ import $ from 'jquery'
 import styled from 'styled-components'
 import Loader from './Loader'
 import Modal from './Modal'
+import Button from '@material-ui/core/Button';
 
 class Bills extends Component {
   constructor(props){
@@ -13,7 +14,8 @@ class Bills extends Component {
       today: this.setTodayDate(), // сегодняшняя дата
       loading: true,
       modal: false,
-      modalText: ''
+      modalText: '',
+      showInactive: false
     }
     this.openModal    = this.openModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -157,6 +159,7 @@ class Bills extends Component {
     )
   }
 
+  showInactive = () => this.setState({ showInactive: !this.state.showInactive });
   render() {
     const { fromFirstValue, loading } = this.state;
 
@@ -173,8 +176,20 @@ class Bills extends Component {
       <Form onSubmit={this.hadleSubmit} id='vystavlenie-schetov' method='POST' action=''>
         <p className='error renter-error'><strong>Выберите один или более договор:</strong></p>      
           
-        {this.props.testStore.contracts.map((contract, index) => {           
-          return this.createCheckbox(contract.short_name, contract.contract_number, contract.summa, contract.contract_id, contract.renter_id, index) 
+        {this.props.testStore.contracts.map((contract, index) => {  
+          if (parseInt(contract.status)) {
+            return this.createCheckbox(contract.short_name, contract.contract_number, contract.summa, contract.contract_id, contract.renter_id, index) 
+          }          
+        })}
+
+        <Button variant="contained" onClick={this.showInactive} style={{ background: '#000', color: '#fff', margin: '15px 0 10px' }}>
+          Показать с недействующими договорами
+        </Button>
+
+        {this.props.testStore.contracts.map((contract, index) => {  
+          if (!parseInt(contract.status) && this.state.showInactive) {
+            return this.createCheckbox(contract.short_name, contract.contract_number, contract.summa, contract.contract_id, contract.renter_id, index) 
+          }          
         })}
 
         <hr />
