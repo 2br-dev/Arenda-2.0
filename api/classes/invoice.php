@@ -47,7 +47,7 @@ class Invoice
     function read_renter_year($renter, $year)
     {
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
-            WHERE `id` = ?s 
+            WHERE `renter_id` = ?s 
             AND `period_year` = ?s
             ORDER BY `id` DESC", array($renter, $year))->all();
 
@@ -57,7 +57,7 @@ class Invoice
     function read_renter_year_month($renter, $year, $month)
     {
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
-            WHERE `id` = ?s 
+            WHERE `renter_id` = ?s 
             AND `period_year` = ?s
             AND `period_month` = ?s
             ORDER BY `id` DESC", array($renter, $year, $month))->all();

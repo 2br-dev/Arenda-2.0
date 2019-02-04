@@ -24,8 +24,12 @@ class Print extends Component {
   }
 
   // получаем арендаторов
-  componentDidMount() {
-    fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`)
+  async componentDidMount() {
+    // расставляем айдишники всем
+    await fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/actions/give_id.php`)
+      .then(response => response.json())
+      
+    await fetch(`${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/renters/read.php`)
       .then(response => response.json())
       .then(res => this.props.getRenters(res)) 
       .then(() => this.setState({ loading: false }))

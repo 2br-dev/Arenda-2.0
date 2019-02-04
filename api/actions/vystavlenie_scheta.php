@@ -119,6 +119,7 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
     // Добавляем запись в таблицу Счета
     O('_mdd_invoice')->create(array(
       'renter' => $renter['full_name'],
+      'renter_id' => $renter_id,
       'invoice_date' => $_POST['date'],
       's:period_year' => $_POST['year'],
       's:period_month' => $month['month_number'],
