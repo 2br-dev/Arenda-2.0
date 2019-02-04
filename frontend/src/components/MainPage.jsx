@@ -24,7 +24,7 @@ export default class MainPage extends Component {
   switchComponent = () => {
     switch(this.state.url) {
       case '':
-        return <Reestr />  
+        return <CustomizedTable />  
       case 'reestr':
         return <Reestr /> 
       case 'bills':
