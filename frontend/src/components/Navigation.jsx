@@ -39,7 +39,10 @@ export default class Navigation extends Component {
               </li> 
               <li>
                 <Link to='/history' onClick={() => this.props.handleChangeUrl('history')}>История</Link>
-              </li> 
+              </li>
+           {/*    <li>
+                <Link to='/stats' onClick={() => this.props.handleChangeUrl('stats')}>Статистика</Link>
+              </li> */}  
             </React.Fragment>) : null}
             <Li>
               <Link to='' onClick={this.logout.bind(this)}>Выйти</Link>

@@ -6,6 +6,7 @@ import Print from './Print'
 import Payments from './Payments'
 import CustomizedTable from './History'
 import RentersData from './RentersData'
+import Stats from './Stats'
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export default class MainPage extends Component {
   switchComponent = () => {
     switch(this.state.url) {
       case '':
-        return <Payments />  
+        return <Reestr />  
       case 'reestr':
         return <Reestr /> 
       case 'bills':
@@ -34,6 +35,8 @@ export default class MainPage extends Component {
         return <Payments /> 
       case 'history':
         return <CustomizedTable /> 
+      case 'stats':
+        return <Stats /> 
       case 'data':
         return <RentersData /> 
       default: 

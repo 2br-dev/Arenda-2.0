@@ -14,9 +14,11 @@ export default class App extends Component {
           <Route path={'/print'} component={MainPage}/>
           <Route path={'/payments'} component={MainPage}/>
           <Route path={'/history'} component={MainPage}/>
-          <Route path={'/login'} component={Login}/>
-          <Route path={'/account'} component={Account}/>
           <Route path={'/data'} component={MainPage}/>
+        {/*   <Route path={'/stats'} component={MainPage}/> */}
+
+          <Route path={'/login'} component={Login}/>
+          <Route path={'/account'} component={Account}/>    
           <MainPage />
         </Switch>
       </BrowserRouter> 

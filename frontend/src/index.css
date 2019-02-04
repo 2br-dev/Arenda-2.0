@@ -265,3 +265,8 @@ hr {
     margin: 0.4em auto;
   }
 }
+
+.MuiTabs-indicator-47 {
+  background-color: green !important;
+  height: 3px !important;
+}

@@ -6,6 +6,7 @@ include_once '../../define.php';
 include_once '../config/database.php';
 include_once '../classes/peni.php';
 include_once '../classes/invoice.php';
+include_once './compare.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -19,6 +20,13 @@ $renter_id       = __post('renter_id');
 $renter_name     = __post('renter_name');
 $renter_document = __post('renter_document');
 $id              = __post('contract_id');
+
+
+// проверяем был ли оплачен счёт повторно
+if(!comparePayment($summa, $date, $number, $renter_name, $renter_document, $id)) {
+  echo json_encode(array('payed' => true));
+  die;
+}
 
 $allinvoices     = $Invoice->read_active($id);
 $invoices        = array();
@@ -53,6 +61,7 @@ if (isset($summa) && isset($date) && isset($number) && isset($renter_id) && isse
     'document' => $id,
     'payment_info' => $renter_document,
     'invoices' => implode(",", $invoices),
+    'rest' => __post('number'),
   ));
    
   // берем общий баланс арендодателя и баланс контракта	

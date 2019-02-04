@@ -31,62 +31,70 @@ class Invoice
 
 
     // constructor with $db as database connection
-    public function __construct($db){
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
-    function read_all() {   
-      $invoices = Q("SELECT * FROM `#_mdd_invoice` ORDER BY `id` DESC", array())->all();
+    function read_all()
+    {
+        $invoices = Q("SELECT * FROM `#_mdd_invoice` ORDER BY `id` DESC", array())->all();
 
-      return $invoices;
-    }
-
-
-    function read_renter_year($renter, $year) {   
-        $invoices = Q("SELECT * FROM `#_mdd_invoice` 
-            WHERE `renter` = ?s 
-            AND `period_year` = ?s
-            ORDER BY `id` DESC", array($renter, $year))->all();
-  
         return $invoices;
     }
 
-    function read_renter_year_month($renter, $year, $month) {   
+
+    function read_renter_year($renter, $year)
+    {
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
-            WHERE `renter` = ?s 
+            WHERE `id` = ?s 
+            AND `period_year` = ?s
+            ORDER BY `id` DESC", array($renter, $year))->all();
+
+        return $invoices;
+    }
+
+    function read_renter_year_month($renter, $year, $month)
+    {
+        $invoices = Q("SELECT * FROM `#_mdd_invoice` 
+            WHERE `id` = ?s 
             AND `period_year` = ?s
             AND `period_month` = ?s
             ORDER BY `id` DESC", array($renter, $year, $month))->all();
-  
+
         return $invoices;
     }
 
-    function read_year($year) {   
+    function read_year($year)
+    {
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `period_year` = ?s
             ORDER BY `id` DESC", array($year))->all();
-  
+
         return $invoices;
     }
-     
-    function read_year_month($year, $month) {   
+
+    function read_year_month($year, $month)
+    {
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `period_year` = ?s 
             AND `period_month` = ?s
             ORDER BY `id` DESC", array($year, $month))->all();
-  
-        return $invoices;
-    }  
 
-    function read_by_contract($id) {   
+        return $invoices;
+    }
+
+    function read_by_contract($id)
+    {
         $invoices = Q("SELECT * FROM `#_mdd_invoice` 
             WHERE `contract_id` = ?s 
             ORDER BY `id` DESC", array($id))->all();
-  
-        return $invoices;
-    }  
 
-    function read_active($id) {
+        return $invoices;
+    }
+
+    function read_active($id)
+    {
         $invoices = Q("SELECT `id` FROM `#_mdd_invoice` 
             WHERE `contract_id` = ?s AND `rest` != ?i
             ORDER BY `id` ASC", array($id, 0))->all();
@@ -94,65 +102,72 @@ class Invoice
         return $invoices;
     }
 
-    function read_by_renter_fullname($fullname) {   
+    function read_by_renter_fullname($fullname)
+    {
         $invoices = Q("SELECT * FROM `#_mdd_invoice` AS `i`
             
             LEFT JOIN `#_mdd_contracts` AS `c` ON `i`.`contract_id` = `c`.`id`
             
             WHERE `i`.`renter` = ?s 
             ORDER BY `i`.`id` DESC", array($fullname))->all();
-  
+
         return $invoices;
-    }  
-    
-    function payWithDiscount($invoice, $renter_id, $id, $summa, $db, $first){
+    }
+
+    function payWithDiscount($invoice, $renter_id, $id, $summa, $db, $first)
+    {
         // берём скидку и сумму по текущему счёту
-        $discount       =   floatval(Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('discount'));
-        $contract_summa =   floatval(Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('summa'));
-        $invoice_summa  =   floatval(Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('summa'));
+        $discount = floatval(Q("SELECT `discount` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('discount'));
+        $contract_summa = floatval(Q("SELECT `summa` FROM `#_mdd_contracts` WHERE `id` = ?s", array($id))->row('summa'));
+        $invoice_summa = floatval(Q("SELECT `summa` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('summa'));
+        $invoice_rest = floatval(Q("SELECT `rest` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('rest'));
 
         if ($first == 1) {
-            $final_sum      =   floatval($invoice_summa * ($discount / $contract_summa));        
-            $difference     =   floatval($invoice_summa) - floatval($final_sum);
+            $final_sum = floatval($invoice_summa * ($discount / $contract_summa));
+            $difference = floatval($invoice_summa) - floatval($final_sum);
         } else {
-            $final_sum      =   $discount;
-            $difference     =   floatval($contract_summa) - floatval($final_sum);
+            $final_sum = $discount;
+            $difference = floatval($contract_summa) - floatval($final_sum);
         }
 
-        // так же нам нужно обновить все остальные балансы по этому договору
-        $ground = Q("SELECT `invoice_number` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('invoice_number');
+        if ($summa >= $invoice_rest) {
+            // так же нам нужно обновить все остальные балансы по этому договору
+            $ground = Q("SELECT `invoice_number` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('invoice_number');
 
-        $balance_id = Q("SELECT `id` FROM `#_mdd_balance` WHERE `ground_id` = ?s", array($ground))->row('id');
+            $balance_id = Q("SELECT `id` FROM `#_mdd_balance` WHERE `ground_id` = ?s", array($ground))->row('id');
 
-        $update_rest_balance = "UPDATE `db_mdd_balance` 
+            $update_rest_balance = "UPDATE `db_mdd_balance` 
             SET `balance` = (`balance` + '$difference') 
             WHERE `id` >= '$balance_id'
             AND `contract_id` = '$id'";
 
-        $db->query($update_rest_balance);  
+            $db->query($update_rest_balance);
 
-        $upd_summa          =   "UPDATE `db_mdd_invoice`    SET `summa`     = '$final_sum'   WHERE `id` = '$invoice'";
-        $upd_rest           =   "UPDATE `db_mdd_invoice`    SET `rest`      = '$final_sum'   WHERE `id` = '$invoice'";
+            $upd_summa = "UPDATE `db_mdd_invoice`    SET `summa`     = '$final_sum'   WHERE `id` = '$invoice'";
+            $upd_rest = "UPDATE `db_mdd_invoice`    SET `rest`      = '$final_sum'   WHERE `id` = '$invoice'";
 
-        $sql_all_balance    =   "UPDATE `db_mdd_balance`    SET `summa`     = '$final_sum'   WHERE `ground_id` = '$ground'"; 
-        $sql_rest_balance   =   "UPDATE `db_mdd_balance`    SET `balance`   = (`balance` + '$difference')  WHERE `ground_id` = '$ground'"; 
+            $sql_all_balance = "UPDATE `db_mdd_balance`    SET `summa`     = '$final_sum'   WHERE `ground_id` = '$ground'";
+            $sql_rest_balance = "UPDATE `db_mdd_balance`    SET `balance`   = (`balance` + '$difference')  WHERE `ground_id` = '$ground'";
 
-        $sql_balance        =   "UPDATE `db_mdd_renters`    SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_renters`.`id` = '$renter_id'";
-        $sql_cont_balance   =   "UPDATE `db_mdd_contracts`  SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_contracts`.`id` = '$id'";
+            $sql_balance = "UPDATE `db_mdd_renters`    SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_renters`.`id` = '$renter_id'";
+            $sql_cont_balance = "UPDATE `db_mdd_contracts`  SET `balance`   = (`balance` + '$difference')  WHERE `db_mdd_contracts`.`id` = '$id'";
 
-        $db->query($upd_summa);
-        $db->query($upd_rest);
-        $db->query($sql_balance);
-        $db->query($sql_cont_balance); 
-        $db->query($sql_all_balance);
+            $db->query($upd_summa);
+            $db->query($upd_rest);
+            $db->query($sql_balance);
+            $db->query($sql_cont_balance);
+            $db->query($sql_all_balance);
         /* $db->query($sql_rest_balance); */
+        }
+
 
         return $summa - $final_sum;
     }
 
-    function countDaysDifference($id, $contract_id, $renter_id, $payment_date) {
+    function countDaysDifference($id, $contract_id, $renter_id, $payment_date)
+    {
         $database = new Database();
-        $db = $database->getConnection(); 
+        $db = $database->getConnection();
         $Peni = new Peni($db);
 
         $start_arenda = Q("SELECT `start_arenda` FROM `#_mdd_contracts` WHERE `id` = ?i", array($contract_id))->row('start_arenda');
@@ -164,10 +179,11 @@ class Invoice
             # если первый месяц берём из переменной
             $discount_days = Q("SELECT `discount_days` FROM `#_mdd_contracts` WHERE `id` = ?s", array($contract_id))->row('discount_days');
         } else { // иначе 5 дней
-            $discount_days = 4;      
+            $discount_days = 4;
         }
-      
-        $days_difference = $Peni->countDayDifference($start_arenda, $payment_date, $contract_id, $discount_days); 
+
+        $days_difference = $Peni->countDayDifference($start_arenda, $payment_date, $contract_id, $discount_days);
         return $days_difference;
     }
+
 }

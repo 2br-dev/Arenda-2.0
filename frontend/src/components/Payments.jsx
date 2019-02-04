@@ -180,8 +180,7 @@ class Payments extends Component {
               warning: false,
               open: true,
               success: true,
-              summa: 0,
-              number: 0
+              summa: null
             });
             self.fetchData();
             self.fetchContracts();

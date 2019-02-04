@@ -145,7 +145,7 @@ class Print extends Component {
         {selectedRenter !== '' ? <option value='0'>Все арендаторы</option> : null}
         {store.renters.map((renter, i) => {  
           return (
-            <option key={i} value={renter.full_name}>{renter.short_name}</option>
+            <option key={i} value={renter.id}>{renter.short_name}</option>
           )
         })}
       </Select>
