@@ -129,7 +129,7 @@ if (!empty($_POST['renter']) && !empty($_POST['date']) && !empty($_POST['year'])
       'payment_info' => '',
       'summa'	=> $summa,
       'amount' => $amount,
-      'discount' => number_format(intval($discount),2,".",""),
+      'discount' => number_format(floatval($discount),2,".",""),
       'rest' => $rest, 
       'number_index' => 0,
       'schet_id' => $number_schet,

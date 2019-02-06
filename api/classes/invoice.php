@@ -125,11 +125,11 @@ class Invoice
         $invoice_rest = floatval(Q("SELECT `rest` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('rest'));
 
         if ($first == 1) {
-            $final_sum = floatval($invoice_summa * ($discount / $contract_summa));
-            $difference = floatval($invoice_summa) - floatval($final_sum);
+            $final_sum = number_format(floatval($invoice_summa * ($discount / $contract_summa)), 2, '.', '');
+            $difference = number_format(floatval($invoice_summa) - floatval($final_sum), 2, '.', '');
         } else {
-            $final_sum = $discount;
-            $difference = floatval($contract_summa) - floatval($final_sum);
+            $final_sum = number_format($discount, 2, '.', '');
+            $difference = number_format(floatval($contract_summa) - floatval($final_sum), 2, '.', '');
         }
         if ($summa >= $invoice_rest - ($invoice_summa - $discount)) {
             
