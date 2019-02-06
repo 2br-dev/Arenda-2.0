@@ -108,7 +108,11 @@
 						<!--<td>{$print.ground_desc}. Основание: Государственный контракт на аренду нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>-->
 						<td><input type="text" value="{$print.ground_ed}"></td>
 						<td><input type="text" value="{$print.invoice_amount}"></td>
-						<td><input type="text" value="{$print.contract_summa}"></td>
+						{if $print.modified == '1'}
+							<td><input type="text" value="{$print.invoice_summa}"></td>
+						{else}
+							<td><input type="text" value="{$print.contract_summa}"></td>
+						{/if}
 						<td><input type="text" value="{$print.invoice_summa}"></td>
 					{else}			
 						<td>{$allpeni.desc} за {$print.period_month} {$print.period_year} года.</td>
@@ -273,7 +277,11 @@
 							<!--<td>{$print.ground_desc}. Основание: Государственный контракт на аренду нежилого помещения № {$print.contract_number} от {$print.contract_date} г.</td>-->
 							<td>{$print.ground_ed}</td>
 							<td><input type="text" value="{$print.invoice_amount}"></td>
+							{if $print.modified == '1'}
+							<td><input type="text" value="{$print.invoice_summa}"></td>
+							{else}
 							<td><input type="text" value="{$print.contract_summa}"></td>
+							{/if}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						</tr>	
 					{/if}			
@@ -466,7 +474,11 @@
 						{if $disc == 1}
 							<td><input type="text" value="{$print.discoint}"></td>
 						{else}
+							{if $print.modified == '1'}
+							<td><input type="text" value="{$print.invoice_summa}"></td>
+							{else}
 							<td><input type="text" value="{$print.contract_summa}"></td>
+							{/if}
 						{/if}
 						
 						{if $disc == 1}

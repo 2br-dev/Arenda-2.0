@@ -19,8 +19,6 @@ class Account extends Component {
     }
   }
 
-  com
-
   // асинхронные запросы на получения пользователя, договора и счетов.
   async componentDidMount() {
     this.setState({ loading: true })
@@ -245,20 +243,23 @@ class Account extends Component {
                         № счёта: {invoice.invoice_number} за {invoice.period_month}, {invoice.period_year}, на сумму: 
                         { parseFloat(renter.balance) + parseFloat(invoice.summa) >= 0 
                           && !parseInt(invoice.modified)
-                          && this.dayOfMonth() <= this.isFirst(invoice.start_arenda, invoice.invoice_date, invoice.discount_days) 
+                          && this.dayOfMonth() <= this.isFirst(invoice.start_arenda, invoice.invoice_date, invoice.discount_days)
+                          ||
+                          invoice.status === '0' && invoice.summa === invoice.discount 
                           ? 
-                          <span className='ml5'>{`${invoice.discount} (со скидкой)`}</span>
+                          <span className='ml5'>{`${invoice.discount} (со скидкой)`} ₽</span>
                           : 
-                          invoice.summa}
+                          <span className='ml5'>{invoice.summa} ₽</span>}
 
                       </p>
                       <hr />
                       <div className='invoice-details' style={{ 'display': 'none' }} data-block={invoice.renter_id}>
-
+                        
                         { parseFloat(renter.balance) + parseFloat(invoice.summa) >= 0 
                           && !parseInt(invoice.modified)
                           && this.dayOfMonth() <= this.isFirst(invoice.start_arenda, invoice.invoice_date, invoice.discount_days) 
-                          
+                         ||
+                         invoice.status === '0' && invoice.summa === invoice.discount
                         ? (<React.Fragment>       
 
                           {this.recountBalance(renter.balance, invoice.summa, invoice.discount)}

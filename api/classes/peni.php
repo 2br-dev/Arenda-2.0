@@ -264,16 +264,6 @@ class Peni
             // находим разницу в днях, когда был оплачен счёт
             $days_difference = $this->countDayDifference($start_arenda, $payment_date, $invoice, $discount_days);  
 
-            echo json_encode(array(
-                'days_difference' => $days_difference,
-                'discount_days' => $discount_days,
-                'invoice_month' => $invoice_month,
-                'payment_month' => $payment_month,
-                'invoice_year' => $invoice_year,
-                'payment_year' => $payment_year,
-                'modif' => $modified,
-                'summa' => $summa
-            ));
             //проверяем дату когда был оплачен счёт на предмет соответсвия скидке
             if (
                 intval($days_difference)  <=  intval($discount_days) && 

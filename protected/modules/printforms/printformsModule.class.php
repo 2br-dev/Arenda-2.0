@@ -98,6 +98,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 													`invoice`.`amount` as `invoice_amount`,
 													`invoice`.`summa` as `invoice_summa`,
 													`invoice`.`invoice_number` as `document_number`,
+                                                    `invoice`.`modified`,
 
 													`contract`.`id` as `contract_id`, 
 													`contract`.`number` as `contract_number`,
@@ -194,6 +195,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 													`invoice`.`amount` as `invoice_amount`,
 													`invoice`.`summa` as `invoice_summa`,
 													`invoice`.`invoice_number` as `document_number`,
+                                                    `invoice`.`modified`,
 
 													`contract`.`id` as `contract_id`, 
 													`contract`.`number` as `contract_number`,
@@ -292,6 +294,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 													`invoice`.`amount` as `invoice_amount`,
 													`invoice`.`summa` as `invoice_summa`,
 													`invoice`.`invoice_number` as `document_number`,
+                                                    `invoice`.`modified`,
 
 													`contract`.`id` as `contract_id`, 
 													`contract`.`number` as `contract_number`,

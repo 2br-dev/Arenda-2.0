@@ -8,7 +8,7 @@
     ]
 } 
   <script src='/frontend/build/static/js/1.1febb811.chunk.js'></script>
-  <script src='/frontend/build/static/js/main.e41ac467.chunk.js'></script>
+  <script src='/frontend/build/static/js/main.5c705753.chunk.js'></script>
   <script src='/frontend/build/static/js/runtime~main.229c360f.js'></script>
 
   <script src='/js/jquery.min.js'></script>

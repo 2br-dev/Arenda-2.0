@@ -41,7 +41,7 @@ class Balance
         LEFT JOIN `#_mdd_contracts` as `contracts`
         ON `table`.`contract_id`=`contracts`.`id`
 
-        ORDER BY `table`.`id` DESC LIMIT 50")->all();
+        ORDER BY `table`.`id` DESC")->all();
     
         return $balances;
     }

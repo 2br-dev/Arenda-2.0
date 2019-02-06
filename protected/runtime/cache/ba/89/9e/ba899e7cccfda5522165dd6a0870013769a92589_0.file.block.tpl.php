@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-02-01 12:57:03
+/* Smarty version 3.1.32, created on 2019-02-06 15:47:11
   from 'C:\OpenServer\domains\arenda.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c5417ef077b18_24496714',
+  'unifunc' => 'content_5c5ad74f966568_09073435',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ba899e7cccfda5522165dd6a0870013769a92589' => 
     array (
       0 => 'C:\\OpenServer\\domains\\arenda.local\\protected\\modules\\printforms\\tpl\\block.tpl',
-      1 => 1548249015,
+      1 => 1549457227,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c5417ef077b18_24496714 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c5ad74f966568_09073435 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\arenda.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><link type="text/css" rel="stylesheet" href="/css/printform.css" />
 
@@ -180,8 +180,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 "></td>
 						<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_amount'];?>
 "></td>
-						<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['contract_summa'];?>
+						<?php if ($_smarty_tpl->tpl_vars['print']->value['modified'] == '1') {?>
+							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
 "></td>
+						<?php } else { ?>
+							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['contract_summa'];?>
+"></td>
+						<?php }?>
 						<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
 "></td>
 					<?php } else { ?>			
@@ -416,8 +421,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 </td>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_amount'];?>
 "></td>
+							<?php if ($_smarty_tpl->tpl_vars['print']->value['modified'] == '1') {?>
+							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
+"></td>
+							<?php } else { ?>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['contract_summa'];?>
 "></td>
+							<?php }?>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
 "></td>
 						</tr>	
@@ -667,8 +677,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
 "></td>
 						<?php } else { ?>
+							<?php if ($_smarty_tpl->tpl_vars['print']->value['modified'] == '1') {?>
+							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
+"></td>
+							<?php } else { ?>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['contract_summa'];?>
 "></td>
+							<?php }?>
 						<?php }?>
 						
 						<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
