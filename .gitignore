@@ -2,3 +2,6 @@ node_modules
 .idea
 .vscode
 sqlhelper.txt
+protected
+protected/config
+protected/config/dev

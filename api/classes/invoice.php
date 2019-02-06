@@ -129,8 +129,9 @@ class Invoice
             $final_sum = $discount;
             $difference = floatval($contract_summa) - floatval($final_sum);
         }
-
-        if ($summa >= $invoice_rest) {
+        echo json_encode($invoice_summa, $discount, $invoice_rest);
+        if ($summa >= $invoice_rest - ($invoice_summa - $discount)) {
+            
             // так же нам нужно обновить все остальные балансы по этому договору
             $ground = Q("SELECT `invoice_number` FROM `#_mdd_invoice` WHERE `id` = ?i", array($invoice))->row('invoice_number');
 
