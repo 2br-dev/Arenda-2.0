@@ -5,8 +5,10 @@ import $ from 'jquery'
 import Navigation from './Navigation'
 import Functions from '../functions/Functions'
 import styled from 'styled-components'
-import DateRangePicker from '@wojtekmaj/react-daterange-picker'
-import './css/DateRange.css'
+import Button from '@material-ui/core/Button';
+import './css/DateRange.css';
+import AccountTable from './AccountTable';
+
 
 class Account extends Component {
   constructor(props) {
@@ -15,7 +17,8 @@ class Account extends Component {
       loading: true,
       contract: '',
       date: [new Date(), new Date()],
-      hidden: false
+      hidden: false,
+      table: false
     }
   }
 
@@ -71,7 +74,20 @@ class Account extends Component {
       data: { shortname: self.props.testStore.renters[0].short_name },
       type: 'POST',
       success: function (res) {
-        self.props.getPeni(res);    
+        self.props.getPeni(res);
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
+
+    // получаем балансы
+    await $.ajax({
+      url: `${window.location.hostname === 'localhost' ? 'http://arenda.local' : window.location.origin}/api/balance/read_by_id.php`,
+      data: { id: id },
+      type: 'POST',
+      success: function (res) {
+        self.props.getBalances(res);
       },
       error: function (err) {
         console.log(err);
@@ -94,9 +110,9 @@ class Account extends Component {
 
   isFirst = (start_date, invoice_date, days) => {
     const start = start_date.split('.').reverse(),
-          invoice = invoice_date.split('-');
+      invoice = invoice_date.split('-');
 
-    if (start[1] === invoice[1] && start[0] === invoice[0]) {  
+    if (start[1] === invoice[1] && start[0] === invoice[0]) {
       return parseInt(start[2]) + parseInt(days);
     } else {
       return 5;
@@ -116,16 +132,19 @@ class Account extends Component {
 
     return (
       <React.Fragment>
+
+        
+
         {loading ? <Loader></Loader> : (<React.Fragment>
           <Navigation />
           <div className='container' style={{ 'width': '700px ' }}>
             <div>
               <h3 style={{ 'marginBottom': '0' }}>{renter.full_name}</h3>
-              <p style={{ 'marginTop': '0' }}>Текущий баланс: 
-                <span id='balance' style={renter.balance >= 0 ? { 'color': 'green' } : { 'color': 'red' }}> 
+              <p style={{ 'marginTop': '0' }}>Текущий баланс:
+                <span id='balance' style={renter.balance >= 0 ? { 'color': 'green' } : { 'color': 'red' }}>
                   {`${renter.balance} ₽`}
                 </span>
-              </p> 
+              </p>
             </div>
 
             <div style={{ 'marginTop': '40px ' }}>
@@ -144,7 +163,12 @@ class Account extends Component {
               })}
             </div>
 
-            <div style={{ 'marginTop': '40px ' }}>
+
+
+              
+
+
+            
               {/* <Row>
                 <b>Акт сверки</b>
                 <DateRangePicker
@@ -176,7 +200,6 @@ class Account extends Component {
                     rel="noopener noreferrer"  >Распечатать</a>
                 </Row>
               </React.Fragment>) : null} */}
-            </div>
 
             {store.peni.length > 0 && !hidden
               ? (<React.Fragment>
@@ -240,80 +263,80 @@ class Account extends Component {
                   <React.Fragment key={i} >
                     <div onClick={this.toggleInvoice}>
                       <p className='toggle' style={{ 'marginTop': '30px', 'marginBottom': '0' }} >
-                        № счёта: {invoice.invoice_number} за {invoice.period_month}, {invoice.period_year}, на сумму: 
-                        { parseFloat(renter.balance) + parseFloat(invoice.summa) >= 0 
+                        № счёта: {invoice.invoice_number} за {invoice.period_month}, {invoice.period_year}, на сумму:
+                        {parseFloat(renter.balance) + parseFloat(invoice.summa) >= 0
                           && !parseInt(invoice.modified)
                           && this.dayOfMonth() <= this.isFirst(invoice.start_arenda, invoice.invoice_date, invoice.discount_days)
                           ||
-                          invoice.status === '0' && invoice.summa === invoice.discount 
-                          ? 
+                          invoice.status === '0' && invoice.summa === invoice.discount
+                          ?
                           <span className='ml5'>{`${invoice.discount} (со скидкой)`} ₽</span>
-                          : 
+                          :
                           <span className='ml5'>{invoice.summa} ₽</span>}
 
                       </p>
                       <hr />
                       <div className='invoice-details' style={{ 'display': 'none' }} data-block={invoice.renter_id}>
-                        
-                        { parseFloat(renter.balance) + parseFloat(invoice.summa) >= 0 
-                          && !parseInt(invoice.modified)
-                          && this.dayOfMonth() <= this.isFirst(invoice.start_arenda, invoice.invoice_date, invoice.discount_days) 
-                         ||
-                         invoice.status === '0' && invoice.summa === invoice.discount
-                        ? (<React.Fragment>       
 
-                          {this.recountBalance(renter.balance, invoice.summa, invoice.discount)}
-                        
-                          <Row>
-                            <b>Счет со скидкой</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Акт со скидкой</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Счет-фактура со скидкой</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Счет+печать со скидкой</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Акт+печать со скидкой</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Счет-фактура+печать со скидкой</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>                
-                        </React.Fragment>) : (<React.Fragment>
-                          <Row>
-                            <b>Счет</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=0&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Акт</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=0&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Счет-фактура</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=0&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Счет+печать</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=1&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Акт+печать</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=1&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                          <Row>
-                            <b>Счет-фактура+печать</b>
-                            <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=1&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
-                          </Row>
-                        </React.Fragment>)}
+                        {parseFloat(renter.balance) + parseFloat(invoice.summa) >= 0
+                          && !parseInt(invoice.modified)
+                          && this.dayOfMonth() <= this.isFirst(invoice.start_arenda, invoice.invoice_date, invoice.discount_days)
+                          ||
+                          invoice.status === '0' && invoice.summa === invoice.discount
+                          ? (<React.Fragment>
+
+                            {this.recountBalance(renter.balance, invoice.summa, invoice.discount)}
+
+                            <Row>
+                              <b>Счет со скидкой</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Акт со скидкой</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Счет-фактура со скидкой</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=0&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Счет+печать со скидкой</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Акт+печать со скидкой</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Счет-фактура+печать со скидкой</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=1&disc=1`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                          </React.Fragment>) : (<React.Fragment>
+                            <Row>
+                              <b>Счет</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=0&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Акт</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=0&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Счет-фактура</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=0&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Счет+печать</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sch&pr=1&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Акт+печать</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=akt&pr=1&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                            <Row>
+                              <b>Счет-фактура+печать</b>
+                              <a href={`/schet-pechatnaya-forma?num=${invoice.invoice_number}&ind=sf&pr=1&disc=0`} target='_blank' rel="noopener noreferrer" >Распечатать</a>
+                            </Row>
+                          </React.Fragment>)}
                       </div>
                     </div>
                   </React.Fragment>
@@ -321,6 +344,16 @@ class Account extends Component {
               })}
             </div>
           </div>
+
+          <div style={{ 'marginTop': '40px ', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '-50px', paddingBottom: '150px' }}>
+              <Button 
+                onClick={() => this.setState({ table: !this.state.table })}
+                variant='contained'> Показать историю операций</Button>
+                
+              {this.state.table ? (
+                <AccountTable balances={store.balances} />
+              ) : null}  
+          </div>   
         </React.Fragment>)}
 
       </React.Fragment>
@@ -362,6 +395,9 @@ export default connect(
     },
     getPeni: (peni) => {
       dispatch({ type: 'FETCH_PENI_BY_RENTER', payload: peni })
+    },
+    getBalances: (balance) => {
+      dispatch({ type: 'FETCH_BALANCE_BY_ID', payload: balance })
     }
   })
 )(Account);

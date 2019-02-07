@@ -4,11 +4,13 @@ import contracts from './contracts'
 import invoices from './invoices'
 import user from './user'
 import peni from './peni'
+import balances from './balance'
 
 export default combineReducers({
   renters,
   contracts,
   invoices,
   user,
-  peni
+  peni,
+  balances
 })

@@ -45,5 +45,31 @@ class Balance
     
         return $balances;
     }
+
+    function read_by_id($id){
+        $balances = Q("SELECT 
+        `table`.`balance`, `table`.`summa`, `table`.`id`, `table`.`renter`, 
+        `table`.`ground_id`, `table`.`ground`, `table`.`contract`, `table`.`date`,
+        
+        `renters`.`short_name`,
+        `contracts`.`start_arenda`,
+        `invoices`.`rest`
+
+        FROM `#_mdd_balance` as `table`
+        
+        LEFT JOIN `#_mdd_renters` as `renters`
+        ON `table`.`renter`=`renters`.`full_name`
+
+        LEFT JOIN `#_mdd_contracts` as `contracts`
+        ON `table`.`contract_id`=`contracts`.`id`
+
+        LEFT JOIN `#_mdd_invoice` as `invoices`
+        ON `table`.`ground_id`=`invoices`.`invoice_number`
+
+        WHERE `table`.`renter_id` = ?s
+        ORDER BY `table`.`id` DESC", array($id))->all();
+    
+        return $balances;
+    }
   
 }
