@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-02-06 15:47:11
+/* Smarty version 3.1.32, created on 2019-02-08 09:13:04
   from 'C:\OpenServer\domains\arenda.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c5ad74f966568_09073435',
+  'unifunc' => 'content_5c5d1df091d7d5_82956415',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ba899e7cccfda5522165dd6a0870013769a92589' => 
     array (
       0 => 'C:\\OpenServer\\domains\\arenda.local\\protected\\modules\\printforms\\tpl\\block.tpl',
-      1 => 1549457227,
+      1 => 1549606362,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c5ad74f966568_09073435 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c5d1df091d7d5_82956415 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\arenda.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><link type="text/css" rel="stylesheet" href="/css/printform.css" />
 
@@ -62,13 +62,13 @@ $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\are
 			<p>Счет № A-<?php echo $_smarty_tpl->tpl_vars['print']->value['document_number'];?>
  от <?php echo $_smarty_tpl->tpl_vars['invoice_day']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['month_string']->value;?>
- <?php echo $_smarty_tpl->tpl_vars['date']->value[0];?>
+ <?php echo $_smarty_tpl->tpl_vars['print']->value['period_year'];?>
  года</p>
 			<?php } else { ?>
 			<p>Счет № П-<?php echo $_smarty_tpl->tpl_vars['print']->value['document_number'];?>
  от <?php echo $_smarty_tpl->tpl_vars['invoice_day']->value;?>
  <?php echo $_smarty_tpl->tpl_vars['month_string']->value;?>
- <?php echo $_smarty_tpl->tpl_vars['date']->value[0];?>
+ <?php echo $_smarty_tpl->tpl_vars['print']->value['period_year'];?>
  года</p>
 			<?php }?>
 		</div> 

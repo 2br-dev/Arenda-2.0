@@ -521,6 +521,7 @@ final class printformsModule extends \Fastest\Core\Modules\Module
 
         $print['period_month'] = getMonth($print['period_month']);
        
+     /*    exit(__($print)); */
 
         return array(
             'print' => $print,
