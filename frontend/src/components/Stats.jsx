@@ -1,28 +1,13 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import NoSsr from '@material-ui/core/NoSsr';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-
-function TabContainer(props) {
-  return (
-      <Typography component="div" style={{ padding: 8 * 3 }}>
-        {props.color}
-      </Typography>
-  );
-}
-
-function InputContainer(props) {
-  return (
-      <Typography component="div" style={{ padding: 8 * 3 }}>
-        {props.color}
-      </Typography>
-  );
-}
+import InputContainer from './stats/InputContainer';
+import TabContainer from './stats/TabContainer';
 
 function LinkTab(props) {
   return <Tab component="a" onClick={event => event.preventDefault()} {...props} />;
@@ -64,10 +49,10 @@ class Stats extends React.Component {
               <LinkTab label="Сводка" href="page2" className={classes.link} />
             </Tabs>
           </AppBar>
-          {value === 0 && <Paper><InputContainer color='инпуты'></InputContainer></Paper>}
-          {value === 1 && <Paper><TabContainer color='таблица'></TabContainer></Paper>}
+          <Paper style={{ padding: '30px 0 50px'  }}>
+            {value === 1 ? <TabContainer></TabContainer> : <InputContainer></InputContainer>}
+          </Paper>
         </div>
-
       </NoSsr>
     );
   }
