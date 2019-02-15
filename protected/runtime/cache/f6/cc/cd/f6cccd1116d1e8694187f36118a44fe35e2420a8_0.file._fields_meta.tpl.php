@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-28 15:03:24
+/* Smarty version 3.1.32, created on 2019-02-15 11:37:53
   from 'C:\OpenServer\domains\arenda.local\protected\app\core\admin-template\view\structure\_fields_meta.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c4eef8c20fe10_08034819',
+  'unifunc' => 'content_5c667a611c4985_67660145',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:fields/meta.tpl' => 1,
   ),
 ),false)) {
-function content_5c4eef8c20fe10_08034819 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c667a611c4985_67660145 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:fields/meta.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>$_smarty_tpl->tpl_vars['stc_page']->value['title'],'keywords'=>$_smarty_tpl->tpl_vars['stc_page']->value['keywords'],'description'=>$_smarty_tpl->tpl_vars['stc_page']->value['description'],'robots'=>$_smarty_tpl->tpl_vars['stc_page']->value['robots']), 0, false);
 }
 }

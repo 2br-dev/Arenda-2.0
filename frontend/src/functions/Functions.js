@@ -59,6 +59,9 @@ class Functions {
 
   getStringOfMonth(month) {
     let monthNumber = '00';
+
+    if (month < 10) month = '0' + month;
+      
     switch(month) {
       case '01':
         monthNumber = 'Январь'; 
@@ -134,6 +137,9 @@ class Functions {
       }
     }
   }
+
+  toPrice = number => `${Number(number).toFixed(2)} ₽`;
+
 } 
 
 export default Functions;

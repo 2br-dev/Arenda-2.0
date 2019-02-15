@@ -7,14 +7,21 @@ include_once '../config/database.php';
 $database = new Database();
 $db = $database->getConnection();
 
-O('_mdd_communal')->create(array(
-  'month'   => __post('month'),
-  'year'    => __post('year'),
-  'amount'  => __post('amount'),
-  'summa'   => __post('summa'),
-  'type'    => __post('type'),
-));
+if (isset($_POST['month']) && isset($_POST['year']) && isset($_POST['amount']) && isset($_POST['summa']) && isset($_POST['type'])) {
+  O('_mdd_communal')->create(array(
+    'month'   => __post('month'),
+    'year'    => __post('year'),
+    'amount'  => __post('amount'),
+    'summa'   => __post('summa'),
+    'type'    => __post('type'),
+  ));
+  echo json_encode(array('result' => 1));
+} else {
+  echo json_encode(array('result' => 1));
+}
 
 
-echo json_encode(array('result' => 1));
+
+
+
 

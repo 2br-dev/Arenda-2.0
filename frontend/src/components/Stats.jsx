@@ -49,7 +49,7 @@ class Stats extends React.Component {
               <LinkTab label="Сводка" href="page2" className={classes.link} />
             </Tabs>
           </AppBar>
-          <Paper style={{ padding: '30px 0 50px'  }}>
+          <Paper>
             {value === 1 ? <TabContainer></TabContainer> : <InputContainer></InputContainer>}
           </Paper>
         </div>

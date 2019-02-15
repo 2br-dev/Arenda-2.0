@@ -17,6 +17,11 @@ import IconButton from '@material-ui/core/IconButton';
 import classNames from 'classnames';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Paper from '@material-ui/core/Paper';
+import Image from '../../images/wall.jpg';
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -168,8 +173,10 @@ class InputContainer extends Component {
     const { classes } = this.props;
 
     return (
-      <Fragment>
-      <Form id='comunal' className={classes.container} noValidate autoComplete="off" onSubmit={this.onSubmit}>
+      <Paper className={classes.wrapper}>
+      <Card className={classes.card}>
+        <CardContent className={classes.content}>
+        <Form id='comunal' className={classes.container} noValidate autoComplete="off" onSubmit={this.onSubmit}>
         {this.createSelect('year', 'год', selectData.years)}
         {this.createSelect('month', 'месяц', selectData.months)}
         {this.createSelect('type', 'тип', selectData.types)}
@@ -227,7 +234,13 @@ class InputContainer extends Component {
           />
         </Snackbar>
       ) : null}
-      </Fragment>
+        </CardContent>
+        <CardMedia
+          className={classes.cover}
+          image={Image}
+        ></CardMedia>
+      </Card>
+      </Paper>
     );
   }
 }
@@ -262,6 +275,9 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  wrapper: {
+    padding: 60
+  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -269,6 +285,18 @@ const styles = theme => ({
   },
   menu: {
     width: 350,
+  },
+  card: {
+    width: 900,
+    height: '90%',
+    margin: 'auto',
+    display: 'flex',
+  },
+  content: {
+    flex: '1 0 auto',
+  },
+  cover: {
+    width: 480,
   },
 });
 
