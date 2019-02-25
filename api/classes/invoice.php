@@ -105,7 +105,7 @@ class Invoice
     function read_by_renter_fullname($fullname)
     {
         $invoices = Q("SELECT `i`.`summa` as `summa`, `c`.`summa` as `contract_summa`, `i`.`invoice_number`, `i`.`period_month`,
-            `i`.`period_year`, `i`.`modified`, `c`.`start_arenda`, `i`.`invoice_date`, `c`.`discount_days`, `i`.`discount`, `i`.`status`
+            `i`.`period_year`, `i`.`modified`, `c`.`start_arenda`, `i`.`invoice_date`, `c`.`discount_days`, `i`.`discount`, `i`.`status`, `i`.`amount`
              FROM `#_mdd_invoice` AS `i`
             
             LEFT JOIN `#_mdd_contracts` AS `c` ON `i`.`contract_id` = `c`.`id`

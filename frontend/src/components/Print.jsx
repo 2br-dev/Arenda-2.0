@@ -201,7 +201,7 @@ class Print extends Component {
               <span style={{ 'margin':'0' }}> 
                 № счёта:<b className='ml5'>{inv.invoice_number}</b>, 
                 на сумму:<b className='ml5'>{inv.summa}₽</b>, 
-                за: <b className='ml5'>{F.getStringOfMonth(inv.period_month)}, {inv.period_year} </b> 
+                за: <b className='ml5'>{F.getStringOfMonth(inv.period_month)}, {inv.period_year} </b>
                 {inv.modified === '1' ? <p className='ml5' style={{ color:'cornflowerblue' }}> (модифицирован)</p> :null}
               </span>
             </div>

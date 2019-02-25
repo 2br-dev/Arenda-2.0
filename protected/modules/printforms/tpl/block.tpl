@@ -135,7 +135,11 @@
 					{if $disc == 1}
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Скидка:</td>
+							{if $print.invoice_amount == 1}
 							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$discount_summ}"></td>
+							{else}
+							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{math equation="z - (x * y)" z=$print.invoice_summa x=$print.discoint y=$print.invoice_amount format="%.2f"} "></td>
+							{/if}
 						</tr>
 					{/if}
 					<tr>
@@ -145,7 +149,11 @@
 					{if $disc == 1}
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Всего к оплате:</td>
+							{if $print.invoice_amount == 1}
 							<td style="border: 1px solid #000000;"><input type="text" value="{$print.discoint}"></td>
+							{else}
+							<td class='round' style="border: 1px solid #000000;"><input type="text" value="{math equation="x * y" x=$print.discoint y=$print.invoice_amount format="%.2f"}"></td>
+							{/if}
 						</tr>
 					{else}
 						{if $peni == 1}
@@ -164,7 +172,11 @@
 					{if $peni == 1}
 						<p>Всего наименований 1 на сумму <input type="text" value="{$allpeni.peni}"></p>
 						{elseif $disc == 1}
+							{if $print.invoice_amount == 1}
 							<p>Всего наименований 1 на сумму <input type="text" id='numeric-sum' value="{$print.discoint}"></p>
+							{else}
+							<p>Всего наименований 1 на сумму <input class='round' type="text" id='numeric-sum' value="{math equation="x * y" x=$print.discoint y=$print.invoice_amount format="%.2f"}"></p>
+							{/if}
 						{else}
 							<p>Всего наименований 1 на сумму <input type="text" id='numeric-sum' value="{$print.invoice_summa}"></p>
 					{/if}
@@ -298,7 +310,11 @@
 					{if $disc == 1}
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Скидка:</td>
+							{if $print.invoice_amount == 1}
 							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{$discount_summ}"></td>
+							{else}
+							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="{math equation="z - (x * y)" z=$print.invoice_summa x=$print.discoint y=$print.invoice_amount format="%.2f"}"></td>
+							{/if}
 						</tr>
 					{/if}
 					<tr>
@@ -314,7 +330,11 @@
 						{if $disc == 1}
 							<tr>
 								<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
+								{if $print.invoice_amount == 1}
 								<td style="border: 1px solid #000000;"><input type="text" id='numeric-sum' value="{$print.discoint}"></td>
+								{else}
+								<td style="border: 1px solid #000000;"><input type="text" id='numeric-sum' value="{math equation="x * y" x=$print.discoint y=$print.invoice_amount format="%.2f"}"></td>
+								{/if}
 							</tr>
 						{else}
 							<tr>
@@ -472,7 +492,7 @@
 						<td><input type="text" value="{$print.ground_ed}"></td>
 						<td><input type="text" value="{$print.invoice_amount}"></td>
 						{if $disc == 1}
-							<td><input type="text" value="{$print.discoint}"></td>
+							<td><input type="text" value="{math equation="x * y" x=$print.discoint y=$print.invoice_amount format="%.2f"}"></td>
 						{else}
 							{if $print.modified == '1'}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
@@ -482,7 +502,7 @@
 						{/if}
 						
 						{if $disc == 1}
-							<td><input type="text" value="{$print.discoint}"></td>
+							<td><input type="text" value="{math equation="x * y" x=$print.discoint y=$print.invoice_amount format="%.2f"}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
@@ -494,7 +514,7 @@
 						<td><input type="text" value="{$allpeni.peni}"></td>
 					{else}
 						{if $disc == 1}
-							<td><input type="text" value="{$print.discoint}"></td>
+							<td><input type="text" value="{math equation="x * y" x=$print.discoint y=$print.invoice_amount format="%.2f"}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
@@ -509,7 +529,7 @@
 						<td><input type="text" value="{$allpeni.peni}"></td>
 					{else}
 						{if $disc == 1}
-							<td><input type="text" value="{$print.discoint}"></td>
+							<td><input type="text" value="{math equation="x * y" x=$print.discoint y=$print.invoice_amount format="%.2f"}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
@@ -520,7 +540,7 @@
 						<td><input type="text" value="{$allpeni.peni}"></td>
 					{else}
 						{if $disc == 1}
-							<td><input type="text" value="{$print.discoint}"></td>
+							<td><input type="text" value="{math equation="x * y" x=$print.discoint y=$print.invoice_amount format="%.2f"}"></td>
 						{else}
 							<td><input type="text" value="{$print.invoice_summa}"></td>
 						{/if}
@@ -719,4 +739,5 @@
 		text-align: center;
 	}
 </style>
+
 {/if}

@@ -119,14 +119,14 @@ class Account extends Component {
     }
   }
 
-  recountBalance = (balance, summa, discount) => {
+  recountBalance = (balance, summa, discount, amount) => {
     setTimeout(() => {
-      document.getElementById('balance').innerText = ' ' + (parseFloat(balance) + parseFloat(summa) - parseFloat(discount)).toFixed(2) + '₽';
+      document.getElementById('balance').innerText = ' ' + ((parseFloat(balance) + parseFloat(summa) - parseFloat(discount)) * amount).toFixed(2) + '₽';
     }, 0);
   }
 
   render() {
-    const { loading, contract, date, hidden } = this.state;
+    const { loading, hidden } = this.state;
     const renter = this.props.testStore.renters[0];
     const store = this.props.testStore;
 
@@ -270,7 +270,7 @@ class Account extends Component {
                           ||
                           invoice.status === '0' && invoice.summa === invoice.discount
                           ?
-                          <span className='ml5'>{`${invoice.discount} (со скидкой)`} ₽</span>
+                          <span className='ml5'>{`${(invoice.discount * invoice.amount).toFixed(2)} (со скидкой)`} ₽</span>
                           :
                           <span className='ml5'>{invoice.summa} ₽</span>}
 
@@ -285,7 +285,7 @@ class Account extends Component {
                           invoice.status === '0' && invoice.summa === invoice.discount
                           ? (<React.Fragment>
 
-                            {this.recountBalance(renter.balance, invoice.summa, invoice.discount)}
+                            {this.recountBalance(renter.balance, invoice.summa, invoice.discount, invoice.amount)}
 
                             <Row>
                               <b>Счет со скидкой</b>

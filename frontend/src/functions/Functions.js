@@ -52,15 +52,13 @@ class Functions {
       case 'Декабрь':
         monthNumber = '12';         
         break;
-      default: 
     }  
     return monthNumber; 
   }
 
   getStringOfMonth(month) {
     let monthNumber = '00';
-
-    if (month < 10) month = '0' + month;
+    if (typeof month === 'number' && month < 10) month = '0' + month;
       
     switch(month) {
       case '01':
@@ -99,7 +97,6 @@ class Functions {
       case '12':
         monthNumber = 'Декабрь';         
         break;
-      default: 
     }  
     return monthNumber; 
   }

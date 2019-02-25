@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-02-08 09:13:04
+/* Smarty version 3.1.32, created on 2019-02-25 16:42:23
   from 'C:\OpenServer\domains\arenda.local\protected\modules\printforms\tpl\block.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c5d1df091d7d5_82956415',
+  'unifunc' => 'content_5c73f0bf3680f5_48556604',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ba899e7cccfda5522165dd6a0870013769a92589' => 
     array (
       0 => 'C:\\OpenServer\\domains\\arenda.local\\protected\\modules\\printforms\\tpl\\block.tpl',
-      1 => 1549606362,
+      1 => 1551101508,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c5d1df091d7d5_82956415 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c73f0bf3680f5_48556604 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\arenda.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.math.php','function'=>'smarty_function_math',),));
 ?><link type="text/css" rel="stylesheet" href="/css/printform.css" />
 
@@ -219,8 +219,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 					<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Скидка:</td>
+							<?php if ($_smarty_tpl->tpl_vars['print']->value['invoice_amount'] == 1) {?>
 							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['discount_summ']->value;?>
 "></td>
+							<?php } else { ?>
+							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="<?php echo smarty_function_math(array('equation'=>"z - (x * y)",'z'=>$_smarty_tpl->tpl_vars['print']->value['invoice_summa'],'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
+ "></td>
+							<?php }?>
 						</tr>
 					<?php }?>
 					<tr>
@@ -230,8 +235,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 					<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Всего к оплате:</td>
+							<?php if ($_smarty_tpl->tpl_vars['print']->value['invoice_amount'] == 1) {?>
 							<td style="border: 1px solid #000000;"><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
 "></td>
+							<?php } else { ?>
+							<td class='round' style="border: 1px solid #000000;"><input type="text" value="<?php echo smarty_function_math(array('equation'=>"x * y",'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
+"></td>
+							<?php }?>
 						</tr>
 					<?php } else { ?>
 						<?php if ($_smarty_tpl->tpl_vars['peni']->value == 1) {?>
@@ -253,8 +263,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 						<p>Всего наименований 1 на сумму <input type="text" value="<?php echo $_smarty_tpl->tpl_vars['allpeni']->value['peni'];?>
 "></p>
 						<?php } elseif ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
+							<?php if ($_smarty_tpl->tpl_vars['print']->value['invoice_amount'] == 1) {?>
 							<p>Всего наименований 1 на сумму <input type="text" id='numeric-sum' value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
 "></p>
+							<?php } else { ?>
+							<p>Всего наименований 1 на сумму <input class='round' type="text" id='numeric-sum' value="<?php echo smarty_function_math(array('equation'=>"x * y",'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
+"></p>
+							<?php }?>
 						<?php } else { ?>
 							<p>Всего наименований 1 на сумму <input type="text" id='numeric-sum' value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
 "></p>
@@ -447,8 +462,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 					<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
 						<tr>
 							<td style="text-align: right; font-weight: bold; border: none;">Скидка:</td>
+							<?php if ($_smarty_tpl->tpl_vars['print']->value['invoice_amount'] == 1) {?>
 							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['discount_summ']->value;?>
 "></td>
+							<?php } else { ?>
+							<td style="width: 90px; border: 1px solid #000000; border-top: none;"><input type="text" value="<?php echo smarty_function_math(array('equation'=>"z - (x * y)",'z'=>$_smarty_tpl->tpl_vars['print']->value['invoice_summa'],'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
+"></td>
+							<?php }?>
 						</tr>
 					<?php }?>
 					<tr>
@@ -465,8 +485,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 						<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
 							<tr>
 								<td style="text-align: right; font-weight: bold; border: none;">Всего:</td>
+								<?php if ($_smarty_tpl->tpl_vars['print']->value['invoice_amount'] == 1) {?>
 								<td style="border: 1px solid #000000;"><input type="text" id='numeric-sum' value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
 "></td>
+								<?php } else { ?>
+								<td style="border: 1px solid #000000;"><input type="text" id='numeric-sum' value="<?php echo smarty_function_math(array('equation'=>"x * y",'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
+"></td>
+								<?php }?>
 							</tr>
 						<?php } else { ?>
 							<tr>
@@ -674,7 +699,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 						<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_amount'];?>
 "></td>
 						<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
-							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
+							<td><input type="text" value="<?php echo smarty_function_math(array('equation'=>"x * y",'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
 "></td>
 						<?php } else { ?>
 							<?php if ($_smarty_tpl->tpl_vars['print']->value['modified'] == '1') {?>
@@ -687,7 +712,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 						<?php }?>
 						
 						<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
-							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
+							<td><input type="text" value="<?php echo smarty_function_math(array('equation'=>"x * y",'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
 "></td>
 						<?php } else { ?>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
@@ -702,7 +727,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 "></td>
 					<?php } else { ?>
 						<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
-							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
+							<td><input type="text" value="<?php echo smarty_function_math(array('equation'=>"x * y",'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
 "></td>
 						<?php } else { ?>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
@@ -720,7 +745,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 "></td>
 					<?php } else { ?>
 						<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
-							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
+							<td><input type="text" value="<?php echo smarty_function_math(array('equation'=>"x * y",'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
 "></td>
 						<?php } else { ?>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
@@ -734,7 +759,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 "></td>
 					<?php } else { ?>
 						<?php if ($_smarty_tpl->tpl_vars['disc']->value == 1) {?>
-							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['discoint'];?>
+							<td><input type="text" value="<?php echo smarty_function_math(array('equation'=>"x * y",'x'=>$_smarty_tpl->tpl_vars['print']->value['discoint'],'y'=>$_smarty_tpl->tpl_vars['print']->value['invoice_amount'],'format'=>"%.2f"),$_smarty_tpl);?>
 "></td>
 						<?php } else { ?>
 							<td><input type="text" value="<?php echo $_smarty_tpl->tpl_vars['print']->value['invoice_summa'];?>
@@ -1002,6 +1027,7 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 		text-align: center;
 	}
 </style>
+
 <?php }
 }
 }
