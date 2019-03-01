@@ -120,6 +120,7 @@ class Account extends Component {
   }
 
   recountBalance = (balance, summa, discount, amount) => {
+    console.log(balance, summa, discount, amount)
     setTimeout(() => {
       document.getElementById('balance').innerText = ' ' + ((parseFloat(balance) + parseFloat(summa) - parseFloat(discount)) * amount).toFixed(2) + '₽';
     }, 0);
@@ -132,9 +133,6 @@ class Account extends Component {
 
     return (
       <React.Fragment>
-
-        
-
         {loading ? <Loader></Loader> : (<React.Fragment>
           <Navigation />
           <div className='container' style={{ 'width': '700px ' }}>
@@ -162,13 +160,7 @@ class Account extends Component {
                 )
               })}
             </div>
-
-
-
-              
-
-
-            
+      
               {/* <Row>
                 <b>Акт сверки</b>
                 <DateRangePicker
@@ -285,7 +277,7 @@ class Account extends Component {
                           invoice.status === '0' && invoice.summa === invoice.discount
                           ? (<React.Fragment>
 
-                            {this.recountBalance(renter.balance, invoice.summa, invoice.discount, invoice.amount)}
+                            {this.recountBalance(renter.balance, invoice.contract_summa, invoice.discount, invoice.amount)}
 
                             <Row>
                               <b>Счет со скидкой</b>
