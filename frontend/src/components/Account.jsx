@@ -122,7 +122,7 @@ class Account extends Component {
   recountBalance = (balance, summa, invoice_summa, discount, amount, status) => {
     setTimeout(() => {
       document.getElementById('balance').innerText = 
-        ' ' + ((parseFloat(balance) + parseFloat(status === '1' ? invoice_summa : summa) - parseFloat(discount)) * amount).toFixed(2) + '₽';
+        ' ' + ((parseFloat(balance) + parseFloat(status === '0' ? invoice_summa : summa) - parseFloat(discount)) * amount).toFixed(2) + '₽';
     }, 0);
   }
 
